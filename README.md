@@ -1,1 +1,1 @@
-<h1>Osangjaiel Dashboard Project</h1>
+<h1>Dashboard Project</h1>
