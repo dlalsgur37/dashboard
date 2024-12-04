@@ -14,4 +14,10 @@ public class RequestController {
     public String index() {
         return "index";
     }
+
+    @RequestMapping("/list/maintance")
+    public String maintance_list() {  return "maintance_list";  }
+
+    @RequestMapping("/list/customer")
+    public String customer_list() {  return "customer_list";  }
 }

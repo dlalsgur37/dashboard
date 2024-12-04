@@ -16,5 +16,6 @@ public class ResourceConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/").setCachePeriod(60 * 60 * 24 * 365);
         registry.addResourceHandler("/libs/**").addResourceLocations("classpath:/static/libs/").setCachePeriod(60 * 60 * 24 * 365);
         registry.addResourceHandler("/scss/**").addResourceLocations("classpath:/static/scss/").setCachePeriod(60 * 60 * 24 * 365);
+        registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/").setCachePeriod(60 * 60 * 24 * 365);
     }
 }
