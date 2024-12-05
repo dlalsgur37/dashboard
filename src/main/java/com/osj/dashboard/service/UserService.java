@@ -1,11 +1,11 @@
-package com.osj.dashboard;
+package com.osj.dashboard.service;
 
-import com.osj.dashboard.model.User;
+import com.osj.dashboard.dto.UserDTO;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.osj.dashboard.model.UserRepository;
+import com.osj.dashboard.mapper.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -21,20 +21,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(User user) {
+    public UserDTO registerUser(UserDTO userDTO) {
 
         try{
             // 비밀번호가 null일 경우 예외 처리
-            if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
                 throw new IllegalArgumentException("Password cannot be null or empty");
             }
 
             // 비밀번호 암호화 처리 (예: BCrypt)
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            user.setId(3214L);
-            user.setReg_date(LocalDate.now());
-            System.out.println("user >>>>>>>> " + user.getId());
-            return userRepository.save(user); // 저장된 사용자 반환
+            userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+            userDTO.setId(3214L);
+            userDTO.setReg_date(LocalDate.now());
+            System.out.println("user >>>>>>>> " + userDTO.getId());
+            return userRepository.save(userDTO); // 저장된 사용자 반환
 
         }catch (Exception e){
             logger.error("사용자 저장 중 오류 발생", e);

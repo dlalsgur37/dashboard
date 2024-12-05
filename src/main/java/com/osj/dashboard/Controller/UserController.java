@@ -1,8 +1,8 @@
 package com.osj.dashboard.Controller;
 
-import com.osj.dashboard.UserService;
+import com.osj.dashboard.dto.UserDTO;
+import com.osj.dashboard.service.UserService;
 import org.springframework.ui.Model;
-import com.osj.dashboard.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,21 +21,21 @@ public class UserController {
     // 회원가입 폼
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDTO());
         System.out.println("register");
         return "authentication-register";
     }
 
     // 회원가입 처리
     @PostMapping("/register/add")
-    public String registerUser(@ModelAttribute("user") User user) {
-        System.out.println("USER >>> " + user.getPassword());
+    public String registerUser(@ModelAttribute("user") UserDTO userDTO) {
+        System.out.println("USER >>> " + userDTO.getPassword());
         // user.getPassword()가 null인지 확인
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+        if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty");
         }
 
-        userService.registerUser(user);
+        userService.registerUser(userDTO);
         return "authentication-login";
     }
 

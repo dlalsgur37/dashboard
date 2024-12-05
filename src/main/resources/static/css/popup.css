@@ -1,0 +1,137 @@
+.content-container {
+    background-color: white;
+    text-align: right;
+    height: 85vh;
+    width: 80vw;
+    border-radius: 20px;
+    padding: 20px;
+}
+.register-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.register-button:hover {
+    background-color: #45a049;
+}
+
+/* 모달 창 스타일 */
+.customer-modal {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+}
+.customer-modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 70%;
+    height: 80%;
+    text-align: center;
+    position: relative;
+}
+.customer-modal-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.customer-modal-body {
+    margin-top: 30px;
+}
+.customer-modal-body label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+.customer-modal-body input,
+.customer-modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.customer-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.close-btn,
+.submit-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.close-btn {
+    background-color: #f44336;
+    color: white;
+}
+.close-btn:hover {
+    background-color: #d32f2f;
+}
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.error-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.error-modal-content {
+    background-color: #ffdddd;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+}
+.error-modal-content h3 {
+    margin: 0 0 10px;
+    color: #d32f2f;
+}
+.error-modal-content p {
+    margin: 0 0 20px;
+    font-weight: 500;
+    font-size: 16px;
+    color: black;
+}
+.error-modal-content .error-close-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d32f2f;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+.error-modal-content .error-close-btn:hover {
+    background-color: #b71c1c;
+}

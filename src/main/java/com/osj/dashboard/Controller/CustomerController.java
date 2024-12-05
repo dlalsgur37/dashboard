@@ -1,6 +1,5 @@
-package com.osj.dashboard;
+package com.osj.dashboard.Controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.osj.dashboard.dto.CustomerDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +24,22 @@ public class CustomerController {
     }
 
     @PostMapping("/customer/add")
-    public int addCustomer(String id, String name, String information) {
-        CustomerDTO newCustomer = new CustomerDTO(id, name, information);
+    public int addCustomer(String name, String information) {
+        CustomerDTO newCustomer = new CustomerDTO("", name, information);
         List<CustomerDTO> customerList = customerService.selectCustomer();
         try {
             for (CustomerDTO customer : customerList) {
-                if (customer.getId().equals(id)) {
-                    System.out.println("Error : duplicate id !!");
+                if (customer.getName().equals(name)) {
+                    System.out.println("Error : duplicate name !!");
                     return 0;
                 }
             }
+
+            String lastId = customerList.get(customerList.size()-1).getId();
+            String lastIdx = lastId.split("C")[1];
+            int idx = Integer.parseInt(lastIdx) + 1;
+            newCustomer.setId(String.format("C%03d", idx));
+
             customerService.insertCustomer(newCustomer);
             return 1;
 
