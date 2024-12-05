@@ -1,4 +1,4 @@
-package com.osj.dashboard;
+package com.osj.dashboard.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,11 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RequestController {
     @RequestMapping("/")
     public String home() {
-        return "index";
+        return "authentication-login";
     }
 
     @RequestMapping("/index")
     public String index() {
         return "index";
     }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "authentication-login";
+    }
+
+
+
+
+
 }
