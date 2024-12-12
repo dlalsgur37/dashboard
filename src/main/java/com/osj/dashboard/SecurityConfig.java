@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register/**", "/register", "/css/**", "/js/**").permitAll() // 공개 URL 설정
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+                        .anyRequest().permitAll() // 나머지는 인증 필요
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form

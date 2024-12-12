@@ -2,10 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.osj.dashboard.mapper.CustomerMapper">
     <select id="selectCustomer">
-        select * from customer;
+        SELECT *
+        FROM customer
+        WHERE 1 = 1
+        <if test="id != null">
+            AND id=#{id}
+        </if>
+        ;
     </select>
 
     <insert id="insertCustomer">
-        insert into customer(id, name, information) values(#{id}, #{name}, #{information});
+        INSERT INTO customer(id, name, information) VALUES(#{id}, #{name}, #{information});
     </insert>
+
+    <delete id="deleteCustomer">
+        DELETE FROM customer WHERE id=#{id};
+    </delete>
 </mapper>

@@ -1,13 +1,17 @@
+
+:root{
+    --info-bg-color: rgba(166, 209, 255, 1);
+}
+
 .content-container {
     background-color: white;
     text-align: right;
-    height: 85vh;
     width: 80vw;
     border-radius: 20px;
     padding: 20px;
 }
 .register-button {
-    background-color: #4CAF50;
+    background-color: #3292ff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -16,7 +20,24 @@
     cursor: pointer;
 }
 .register-button:hover {
-    background-color: #45a049;
+    background-color: #327dff;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.delete-button:disabled {
+    background-color: rgba(244, 67, 54, 0.3);
 }
 
 /* 모달 창 스타일 */
@@ -87,11 +108,11 @@
     background-color: #d32f2f;
 }
 .submit-btn {
-    background-color: #4CAF50;
+    background-color: #3292ff;
     color: white;
 }
 .submit-btn:hover {
-    background-color: #45a049;
+    background-color: #327dff;
 }
 
 .error-modal {
@@ -134,4 +155,57 @@
 }
 .error-modal-content .error-close-btn:hover {
     background-color: #b71c1c;
+}
+.info-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.info-modal-content {
+    background-color: var(--info-bg-color);
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+}
+.info-modal-content h3 {
+    margin: 0 0 10px;
+    color: var(--info-bg-color);
+}
+.info-modal-content p {
+    margin: 0 0 20px;
+    font-weight: 500;
+    font-size: 20px;
+    /*text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;*/
+    color: white;
+}
+.info-modal-content .info-close-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--info-bg-color);
+    /*text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;*/
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+.customer-name {
+    text-align: left;
+    font-weight: bold;
+    font-size: medium;
+}
+.customer-information {
+    text-align: left;
+    font-size: medium;
+}
+
+table.dataTable.display > tbody > tr.selected * {
+    color: #ffffff;
 }
