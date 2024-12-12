@@ -20,12 +20,12 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customer/view")
+    @GetMapping("/customer")
     public List<CustomerDTO> getCustomerList() {
         return customerService.selectCustomer(true);
     }
 
-    @PostMapping("/customer/add")
+    @PostMapping("/customer")
     public int addCustomer(String name, String information) {
         CustomerDTO newCustomer = CustomerDTO.builder()
                                             .id("")
@@ -41,9 +41,10 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/customer/del")
-    public int delCustomer(@RequestBody HashMap<String, String> customerMap) {
-        CustomerDTO targetCustomer = new CustomerDTO(customerMap);
+    @DeleteMapping("/customer/{id}")
+    public int delCustomer(@PathVariable String id) {
+        CustomerDTO targetCustomer = CustomerDTO.builder()
+                                                .id(id).build();
         int resultCode = 1;
         try {
             resultCode = customerService.deleteCustomer(targetCustomer);

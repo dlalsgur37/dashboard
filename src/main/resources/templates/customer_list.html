@@ -136,7 +136,7 @@
     let customerTable = null;
 
     function initCustomerTable() {
-        fetch('/customer/view', {
+        fetch('/customer', {
             method: 'GET'
             }
         )
@@ -243,7 +243,7 @@
             };
 
             // Ajax 요청
-            fetch('/customer/add', {
+            fetch('/customer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -277,14 +277,9 @@
 
         // 삭제 버튼
         deleteButton.addEventListener('click', function () {
-            console.log(customerTable.row().data());
             // Ajax 요청
-            fetch('/customer/del', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json; charset=UTF-8',
-                },
-                body: JSON.stringify(customerTable.row().data()),
+            fetch('/customer/'+customerTable.row('.selected').data().id, {
+                method: 'DELETE'
             })
                 .then(response => response.text())
                 .then(result => {
