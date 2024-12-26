@@ -10,7 +10,7 @@
     border-radius: 20px;
     padding: 20px;
 }
-.register-button {
+.open-register-button {
     background-color: #3292ff;
     color: white;
     padding: 10px 20px;
@@ -19,7 +19,7 @@
     font-size: 16px;
     cursor: pointer;
 }
-.register-button:hover {
+.open-register-button:hover {
     background-color: #327dff;
 }
 
@@ -41,7 +41,8 @@
 }
 
 /* 모달 창 스타일 */
-.customer-modal {
+.register-modal,
+.info-modal {
     display: none; /* 초기에는 숨김 */
     position: fixed;
     z-index: 1000;
@@ -51,7 +52,8 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
 }
-.customer-modal-content {
+.register-modal-content,
+.info-modal-content {
     background-color: #fff;
     margin: 5% auto;
     padding: 20px;
@@ -62,37 +64,44 @@
     text-align: center;
     position: relative;
 }
-.customer-modal-header {
+.register-modal-header {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 20px;
 }
-.customer-modal-body {
+.register-modal-body,
+.info-modal-body {
     margin-top: 30px;
 }
-.customer-modal-body label {
+.register-modal-body label,
+.info-modal-body label {
     display: block;
     margin-bottom: 10px;
     text-align: left;
     font-weight: bold;
 }
-.customer-modal-body input,
-.customer-modal-body textarea {
+.register-modal-body input,
+.register-modal-body textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.customer-modal-footer {
+.register-modal-footer,
+.info-modal-footer{
     display: flex;
     justify-content: flex-end;
     position: absolute;
     bottom: 20px;
     right: 20px;
 }
-.close-btn,
-.submit-btn {
+.register-close-btn,
+.register-submit-btn,
+.info-close-btn,
+.info-submit-btn {
+    background-color: #f44336;
+    color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -100,18 +109,22 @@
     cursor: pointer;
     margin-left: 10px;
 }
-.close-btn {
+.register-close-btn,
+.info-close-btn {
     background-color: #f44336;
     color: white;
 }
-.close-btn:hover {
+.register-close-btn:hover,
+.info-close-btn:hover {
     background-color: #d32f2f;
 }
-.submit-btn {
+.register-submit-btn,
+.info-submit-btn {
     background-color: #3292ff;
     color: white;
 }
-.submit-btn:hover {
+.register-submit-btn:hover,
+.info-submit-btn:hover {
     background-color: #327dff;
 }
 
@@ -156,7 +169,7 @@
 .error-modal-content .error-close-btn:hover {
     background-color: #b71c1c;
 }
-.info-modal {
+.notice-modal {
     display: none;
     position: fixed;
     z-index: 1100;
@@ -166,7 +179,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 }
-.info-modal-content {
+.notice-modal-content {
     background-color: var(--info-bg-color);
     margin: 20% auto;
     padding: 20px;
@@ -175,23 +188,21 @@
     width: 500px;
     text-align: center;
 }
-.info-modal-content h3 {
+.notice-modal-content h3 {
     margin: 0 0 10px;
     color: var(--info-bg-color);
 }
-.info-modal-content p {
+.notice-modal-content p {
     margin: 0 0 20px;
     font-weight: 500;
     font-size: 20px;
-    /*text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;*/
     color: white;
 }
-.info-modal-content .info-close-btn {
+.notice-modal-content .notice-close-btn {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     background-color: var(--info-bg-color);
-    /*text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;*/
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -200,12 +211,31 @@
     text-align: left;
     font-weight: bold;
     font-size: medium;
+    width: 18%
 }
 .customer-information {
     text-align: left;
     font-size: medium;
+    width: 80%;
+}
+.customer-information > div * {
+    text-align: left;
 }
 
 table.dataTable.display > tbody > tr.selected * {
     color: #ffffff;
+}
+
+.ri--ball-pen-fill {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m17.85 11.805l-.708-.707l-9.9 9.9H3v-4.243L14.314 5.44l5.657 5.657a1 1 0 0 1 0 1.414L12.9 19.583l-1.415-1.414zm.706-9.192l2.829 2.828a1 1 0 0 1 0 1.414L19.97 8.27l-4.243-4.242l1.414-1.414a1 1 0 0 1 1.414 0'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
 }

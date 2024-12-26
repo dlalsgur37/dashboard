@@ -16,10 +16,10 @@ public class RequestController {
     }
 
     @RequestMapping("/list/maintance")
-    public String maintance_list() {  return "maintance_list";  }
+    public String maintance_list() {  return "maintance-list";  }
 
     @RequestMapping("/list/customer")
-    public String customer_list() {  return "customer_list";  }
+    public String customer_list() {  return "customer-list";  }
 
     @RequestMapping("/login")
     public String login() {

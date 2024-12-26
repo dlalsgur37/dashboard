@@ -1,19 +1,17 @@
 package com.osj.dashboard.Controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.osj.dashboard.dto.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.osj.dashboard.service.CustomerService;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CustomerController {
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -31,27 +29,45 @@ public class CustomerController {
                                             .id("")
                                             .name(name)
                                             .information(information).build();
-        int resultCode = 1;
-        try {
-            resultCode = customerService.insertCustomer(newCustomer);
-            return resultCode;
+        int resultCode;
 
-        } catch (Exception e) {
-            return resultCode;
-        }
+        resultCode = customerService.insertCustomer(newCustomer);
+
+        if (resultCode == 409)
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        else if (resultCode == 500)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return resultCode;
     }
 
     @DeleteMapping("/customer/{id}")
     public int delCustomer(@PathVariable String id) {
         CustomerDTO targetCustomer = CustomerDTO.builder()
                                                 .id(id).build();
-        int resultCode = 1;
-        try {
-            resultCode = customerService.deleteCustomer(targetCustomer);
-            return resultCode;
 
-        } catch (Exception e) {
-            return resultCode;
-        }
+        int resultCode;
+        resultCode = customerService.deleteCustomer(targetCustomer);
+
+        if (resultCode == 500)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return resultCode;
+    }
+
+    @PutMapping("/customer")
+    public int updateCustomer(@RequestBody CustomerDTO targetCustomer) {
+        /*CustomerDTO targetCustomer = CustomerDTO.builder()
+                                                .id(id)
+                                                .name(name)
+                                                .information(information).build();*/
+
+        int resultCode;
+        resultCode = customerService.updateCustomer(targetCustomer);
+
+        if (resultCode == 500)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return resultCode;
     }
 }

@@ -18,4 +18,8 @@
     <delete id="deleteCustomer">
         DELETE FROM customer WHERE id=#{id};
     </delete>
+
+    <update id="updateCustomer">
+        UPDATE customer SET name=#{name}, information=#{information} WHERE id=#{id};
+    </update>
 </mapper>

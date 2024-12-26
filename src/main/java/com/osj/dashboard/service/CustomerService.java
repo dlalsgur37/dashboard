@@ -7,13 +7,14 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CustomerService {
-    private CustomerMapper customerMapper;
+    private final CustomerMapper customerMapper;
 
     @Autowired
     public CustomerService(CustomerMapper customerMapper) {
@@ -29,10 +30,11 @@ public class CustomerService {
 
         if (markdown) {
             for (CustomerDTO customer : customerList) {
-                Parser parser = Parser.builder().build();
+                //markdown 이미지 처리 필요 시
+                /*Parser parser = Parser.builder().build();
                 Node document = new Document();
                 document.appendChild(parser.parse("<div class=\"markdown-body\">" + customer.getInformation() + "</div>"));
-                customer.setInformation(HtmlRenderer.builder().build().render(document));
+                customer.setInformation(HtmlRenderer.builder().build().render(document));*/
             }
         } else {
             customerList = selectCustomer();
@@ -44,9 +46,9 @@ public class CustomerService {
     * Customer Insert to DB
     * @param newCustomer : CustomerDTO
     * @return int - resultCode
-    * resultCode = 0 : success
-    * resultCode = 1 : fail - unknown error
-    * resultCode = 2 : fail - duplicate name
+    * resultCode = 201 : success
+    * resultCode = 500 : fail - unknown error
+    * resultCode = 409 : fail - duplicate name
     * */
     public int insertCustomer(CustomerDTO newCustomer) {
         List<CustomerDTO> customerList = selectCustomer();
@@ -55,7 +57,7 @@ public class CustomerService {
             for (CustomerDTO customer : customerList) {
                 if (customer.getName().equals(newName)) {
                     System.out.println("Error : duplicate name !!");
-                    return 2;
+                    return HttpStatus.CONFLICT.value();
                 }
             }
 
@@ -69,9 +71,9 @@ public class CustomerService {
             }
 
             customerMapper.insertCustomer(newCustomer.getId(), newCustomer.getName(), newCustomer.getInformation());
-            return 0;
+            return HttpStatus.CREATED.value();
         } catch (Exception e) {
-            return 1;
+            return HttpStatus.INTERNAL_SERVER_ERROR.value();
         }
 
     }
@@ -80,25 +82,40 @@ public class CustomerService {
      * Customer Delete from DB
      * @param customer : CustomerDTO
      * @return int - resultCode
-     * resultCode = 0 : success
-     * resultCode = 1 : fail - unknown error
+     * resultCode = 200 : success
+     * resultCode = 500 : fail - unknown error
      * */
     public int deleteCustomer(CustomerDTO customer) {
         String customerId = customer.getId();
-        int resultCode = -1;
 
         try {
             CustomerDTO realCustomer = customerMapper.selectCustomer(customerId);
 
             if (realCustomer.getId().equalsIgnoreCase(customerId)) {
                 customerMapper.deleteCustomer(customerId);
-                resultCode = 0;
             }
 
-            return resultCode;
+            return HttpStatus.OK.value();
         } catch (Exception e) {
-            resultCode = 1;
-            return resultCode;
+            return HttpStatus.INTERNAL_SERVER_ERROR.value();
+        }
+
+    }
+
+    /*
+     * Customer Update to DB
+     * @param customer : CustomerDTO
+     * @return int - resultCode
+     * resultCode = 200 : success
+     * resultCode = 500 : fail - unknown error
+     * */
+    public int updateCustomer(CustomerDTO customer) {
+        try {
+            customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
+
+            return HttpStatus.OK.value();
+        } catch (Exception e) {
+            return HttpStatus.INTERNAL_SERVER_ERROR.value();
         }
 
     }

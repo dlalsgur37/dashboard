@@ -14,4 +14,6 @@ public interface CustomerMapper {
     void insertCustomer(String id, String name, String information);
 
     void deleteCustomer(String id);
+
+    void updateCustomer(String id, String name, String information);
 }
