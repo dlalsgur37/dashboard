@@ -1,45 +1,47 @@
 package com.osj.dashboard.service;
 
+import com.osj.dashboard.dto.CustomerDTO;
 import com.osj.dashboard.dto.UserDTO;
-
+import com.osj.dashboard.mapper.UserMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.osj.dashboard.mapper.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+        this.passwordEncoder = new BCryptPasswordEncoder(); // 비밀번호 암호화
     }
 
-    public UserDTO registerUser(UserDTO userDTO) {
 
-        try{
-            // 비밀번호가 null일 경우 예외 처리
-            if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
-                throw new IllegalArgumentException("Password cannot be null or empty");
-            }
+    public void createUser(UserDTO user) {
+        userMapper.insertUser(user);
+    }
 
-            // 비밀번호 암호화 처리 (예: BCrypt)
-            userDTO.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-            userDTO.setId(3214L);
-            userDTO.setReg_date(LocalDate.now());
-            System.out.println("user >>>>>>>> " + userDTO.getId());
-            return userRepository.save(userDTO); // 저장된 사용자 반환
 
-        }catch (Exception e){
-            logger.error("사용자 저장 중 오류 발생", e);
-            throw e;
+    public void registerUser(UserDTO user) {
+        // 현재 시간 설정
+        user.setRegDate(LocalDateTime.now());
+
+        // 비밀번호 암호화
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // 사용자 역할 기본값 설정
+        if (user.getUserRole() == null) {
+            user.setUserRole("ROLE_USER");
         }
 
+
+        // DB에 사용자 정보 저장
+        userMapper.insertUser(user);
     }
+
 }
