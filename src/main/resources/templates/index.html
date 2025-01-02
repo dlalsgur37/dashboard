@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/styles.min.css"/>
 </head>
 
-<body>
 <!--  Body Wrapper -->
 <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
      data-sidebar-position="fixed" data-header-position="fixed">
@@ -31,6 +30,9 @@
                         <a class="nav-link nav-icon-hover" href="javascript:void(0)">
                             <i class="ti ti-bell-ringing"></i>
                             <div class="notification bg-primary rounded-circle"></div>
+                            <div>
+                                <h1>Welcome, <span th:text="${username}">Username</span>!</h1>
+                            </div>
                         </a>
                     </li>
                 </ul>
@@ -58,7 +60,7 @@
                                         <i class="ti ti-list-check fs-6"></i>
                                         <p class="mb-0 fs-3">My Task</p>
                                     </a>
-                                    <a href="./authentication-login.html"
+                                    <a href="/logout"
                                        class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                 </div>
                             </div>

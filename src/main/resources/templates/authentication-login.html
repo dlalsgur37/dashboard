@@ -7,6 +7,7 @@
   <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
   <link rel="shortcut icon" type="image/png" href="/images/logos/osangjaiellogo.png" />
   <link rel="stylesheet" href="/css/styles.min.css" />
+  <script src="/js/login-validation.js"></script>
 </head>
 
 <body>
@@ -26,28 +27,41 @@
                 </a>-->
                 <p class="fs-4 mb-0 fw-bold" align="center">OSANG JAIEL - DASHBOARD</p>
                 <p class="text-center">Your Social Campaigns</p>
-                <form action="/login" method="post">
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+                <form onsubmit="loginForm()" method="post" id="loginForm">
+                  <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                  <input type="hidden" id="remember-me" name="remember-me" value="true" />
+                  <div class="form-group">
+                    <label for="userid" class="form-label">ID</label>
+                    <input type="userid" class="form-control" name="userid" id="userid" aria-describedby="emailHelp">
                   </div>
-                  <div class="mb-4">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+
+                  <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
                   </div>
+                  <!--<div>
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <label for="remember-me">Remember Me</label>
+                  </div>-->
+
                   <div class="d-flex align-items-center justify-content-between mb-4">
-                    <div class="form-check">
+                    <!--<div class="form-check">
                       <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked" checked>
                       <label class="form-check-label text-dark" for="flexCheckChecked">
                         Remeber this Device
                       </label>
-                    </div>
+                    </div>-->
                     <a class="text-primary fw-bold" href="./index.html">Forgot Password ?</a>
                   </div>
-                  <a href="./index.html" class="btn btn-primary w-100 py-8 fs-4 mb-4">Sign In</a>
+
+                  <div class="form-group">
+                    <input type="submit" value="Sign In"  class="btn btn-primary w-100 py-8 fs-4 mb-4">
+                  </div>
+
                   <div class="d-flex align-items-center justify-content-center">
-                    <p class="fs-4 mb-0 fw-bold">New to SeoDash?</p>
-                    <a class="text-primary fw-bold ms-2" href="./register">Create an account</a>
+                    <p class="fs-4 mb-0 fw-bold">Don't have an account?</p>
+                    <a class="text-primary fw-bold ms-2" href="./register">Register here</a>
                   </div>
                 </form>
               </div>
@@ -57,8 +71,8 @@
       </div>
     </div>
   </div>
-  <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!--<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </body>
 

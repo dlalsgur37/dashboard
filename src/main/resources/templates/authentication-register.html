@@ -7,6 +7,19 @@
   <title>SeoDash Free Bootstrap Admin Template by Adminmart</title>
   <link rel="shortcut icon" type="image/png" href="/images/logos/seodashlogo.png" />
   <link rel="stylesheet" href="/css/styles.min.css" />
+
+  <script>
+    function validateForm() {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("패스워드가 일치하지 않습니다.");
+        return false; // 폼 제출 중단
+      }
+      return true; // 폼 제출 진행
+    }
+  </script>
 </head>
 
 <body>
@@ -20,61 +33,44 @@
         <div class="col-md-8 col-lg-6 col-xxl-3">
           <div class="card mb-0">
             <div class="card-body">
-              <!--<a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                <img src="/images/logos/logo-light.svg" alt="">
-              </a>-->
+
               <p class="fs-4 mb-0 fw-bold" align="center">OSANG JAIEL - DASHBOARD</p>
               <p class="text-center">Your Social Campaigns</p>
-                <!--
-              <form action="/register" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required><br>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required><br>
-
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required><br>
-
-                <button type="submit">Register</button>
-              </form>-->
-
-                <form action="/register/add" method="post">
+                <form action="/register" method="post">
                 <div class="form-group">
                   <label for="userid" class="form-label">아이디</label>
-                  <input type="text" class="form-control" id="userid" aria-describedby="textHelp" name="userid">
+                  <input type="text" class="form-control" id="userid" aria-describedby="textHelp" name="userid" required>
                 </div>
                 <div class="form-group">
                   <label for="password" class="form-label">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="password">
+                  <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <div class="form-group">
                   <label for="confirmPassword" class="form-label">비밀번호 확인</label>
-                  <input type="password" class="form-control" id="confirmPassword" required>
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                   <span id="passwordError" class="error"></span>
                 </div>
                 <div class="form-group">
                   <label for="email" class="form-label">이메일</label>
-                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" required>
                 </div>
                 <div class="form-group">
                   <label for="username" class="form-label">이름</label>
-                  <input type="text" class="form-control" id="username" name="username" aria-describedby="textHelp">
+                  <input type="text" class="form-control" id="username" name="username" aria-describedby="textHelp" required>
                 </div>
                 <div class="form-group">
                   <label for="dep_id" class="form-label">부서</label>
-                  <input type="text" class="form-control" id="dep_id" name="dep_id" aria-describedby="textHelp">
+                  <input type="text" class="form-control" id="dep_id" name="dep_id" aria-describedby="textHelp" required>
                 </div>
                 <div class="form-group">
                   <label for="phone_num" class="form-label">핸드폰</label>
                   <input type="text" class="form-control" id="phone_num" name="phone_num" aria-describedby="textHelp">
                 </div>
                 <div class="form-group">
-                  <label for="officephone" class="form-label">내선번호</label>
-                  <input type="text" class="form-control" id="officephone" name="officephone" aria-describedby="textHelp">
+                  <label for="internal_num" class="form-label">내선번호</label>
+                  <input type="text" class="form-control" id="internal_num" name="internal_num" aria-describedby="textHelp">
                 </div>
-
-
 
                 <div class="form-group">
                   <input type="submit" value="Sign Up"  class="btn btn-primary w-100 py-8 fs-4 mb-4">
