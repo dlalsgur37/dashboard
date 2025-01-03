@@ -1,0 +1,314 @@
+
+:root{
+    --info-bg-color: rgba(166, 209, 255, 1);
+}
+
+.content-container {
+    background-color: white;
+    text-align: right;
+    width: 80vw;
+    border-radius: 20px;
+    padding: 20px;
+}
+.open-register-button {
+    background-color: #3292ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.open-register-button:hover {
+    background-color: #327dff;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.delete-button:disabled {
+    background-color: rgba(244, 67, 54, 0.3);
+}
+
+/* 모달 창 스타일 */
+.register-modal,
+.info-modal {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+}
+.register-modal-content,
+.info-modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 70%;
+    height: 80%;
+    text-align: center;
+    position: relative;
+}
+.register-modal-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.register-modal-body,
+.info-modal-body {
+    margin-top: 30px;
+    overflow-y: auto; /*by mslim 스크롤 추가*/
+    max-height: 600px;/*by mslim 최대높이추가*/
+}
+.register-modal-body label,
+.info-modal-body label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+.register-modal-body input,
+.register-modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.register-modal-footer,
+.info-modal-footer{
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.register-close-btn,
+.register-submit-btn,
+.info-close-btn,
+.info-submit-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.register-close-btn,
+.info-close-btn {
+    background-color: #f44336;
+    color: white;
+}
+.register-close-btn:hover,
+.info-close-btn:hover {
+    background-color: #d32f2f;
+}
+.register-submit-btn,
+.info-submit-btn {
+    background-color: #3292ff;
+    color: white;
+}
+.register-submit-btn:hover,
+.info-submit-btn:hover {
+    background-color: #327dff;
+}
+
+.error-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.error-modal-content {
+    background-color: #ffdddd;
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+}
+.error-modal-content h3 {
+    margin: 0 0 10px;
+    color: #d32f2f;
+}
+.error-modal-content p {
+    margin: 0 0 20px;
+    font-weight: 500;
+    font-size: 16px;
+    color: black;
+}
+.error-modal-content .error-close-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d32f2f;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+.error-modal-content .error-close-btn:hover {
+    background-color: #b71c1c;
+}
+.notice-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.notice-modal-content {
+    background-color: var(--info-bg-color);
+    margin: 20% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+}
+.notice-modal-content h3 {
+    margin: 0 0 10px;
+    color: var(--info-bg-color);
+}
+.notice-modal-content p {
+    margin: 0 0 20px;
+    font-weight: 500;
+    font-size: 20px;
+    color: white;
+}
+.notice-modal-content .notice-close-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--info-bg-color);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+table.dataTable.display > tbody > tr.selected * {
+    color: #ffffff;
+}
+
+.ri--ball-pen-fill {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m17.85 11.805l-.708-.707l-9.9 9.9H3v-4.243L14.314 5.44l5.657 5.657a1 1 0 0 1 0 1.414L12.9 19.583l-1.415-1.414zm.706-9.192l2.829 2.828a1 1 0 0 1 0 1.414L19.97 8.27l-4.243-4.242l1.414-1.414a1 1 0 0 1 1.414 0'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+/*maintenance*/
+
+thead th {
+    text-align: center !important;
+}
+
+.maintenance-name {
+    text-align: left;
+    font-weight: bold;
+    font-size: medium;
+    min-width: 100px;
+    max-width: 110px;
+}
+
+.maintenance-request_date {
+    text-align: center;
+    font-size: medium;
+    min-width: 120px;
+    max-width: 140px;
+}
+
+.maintenance-description {
+    text-align: left;
+    font-size: medium;
+    width: 50%;
+}
+
+.maintenance-solve{
+    text-align: left;
+    font-size: medium;
+    width: 50%;
+}
+
+.maintenance-description > div * {
+    text-align: left;
+}
+
+.maintenance-solve> div * {
+    text-align: left;
+}
+
+
+.form-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap:  10px; /* 발의자와 발의일자 사이의 간격 조정 */
+    width: 520px;
+}
+
+.form-row label {
+    margin-right: 3px; /* 각 레이블과 입력 필드 간의 간격 */
+}
+
+.date-label {
+    margin-left: 10px; /* 발의일자를 오른쪽으로 이동 */
+}
+
+.suggestionsCustomer {
+    position: absolute;
+    top: 0; /* JavaScript에서 동적으로 설정 */
+    left: 0; /* JavaScript에서 동적으로 설정 */
+    width: auto; /* input의 폭에 맞춤 */
+    max-width: 95px; /* 최대 폭 제한 */
+    max-height: 200px; /* 최대 높이 제한 */
+    overflow-y: auto; /* 스크롤 가능 */
+    background-color: white; /* 배경색 */
+    border: 1px solid #ccc; /* 테두리 */
+    box-shadow: 0 4px 6px rgba(0, 0, 1, 1); /* 그림자 */
+    z-index: 1000; /* 팝업이 항상 최상단에 표시 */
+    display: none; /* 초기에는 숨김 */
+}
+.suggestionsCustomer div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestionsCustomer div:hover {
+    background-color: #f0f0f0;
+}
+
+#register-customer, #register-name, #register-request_date {
+    flex: 1; /* 입력 필드의 크기를 동일하게 조정 */
+}
