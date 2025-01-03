@@ -116,9 +116,11 @@
             <div class="info-modal-content">
                 <div class="info-modal-body">
                     <form id="info-modal-form">
-                        <label class="customer-name" id="customer-name"></label>
+                        <label for="customer-name">고객사</label>
+                        <input type="text" id="customer-name" name="customer-name" readonly="readonly" />
 
-                        <div id="info-editor"></div>
+                        <label for="info-editor">고객사 정보</label>
+                        <div id="info-editor" class="toast-editor"></div>
                     </form>
                 </div>
                 <div class="info-modal-footer">
@@ -153,6 +155,7 @@
 
 <script src="/js/customer.js"></script>
 <script src="/libs/jquery/dist/jquery.min.js"></script>
+<script src="/js/typeahead/typeahead.bundle.min.js"></script>
 <script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/libs/simplebar/dist/simplebar.js"></script>
 <script src="/js/sidebarmenu.js"></script>
@@ -165,7 +168,8 @@
 <link href="/css/datatables/datatables.css" rel="stylesheet">
 <script src="/js/datatables/datatables.js"></script>
 <!--  Custom Style  -->
-<link rel="stylesheet" href="/css/popup.css"/>
+<link rel="stylesheet" href="/css/customer.css"/>
+<!--<link rel="stylesheet" href="/css/typeahead.css"/>-->
 
 <script>
     includeLeftPanel();

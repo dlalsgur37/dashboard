@@ -28,14 +28,15 @@ public class CustomerController {
         CustomerDTO newCustomer = CustomerDTO.builder()
                                             .id("")
                                             .name(name)
-                                            .information(information).build();
+                                           .information(information).build();
+
         int resultCode;
 
         resultCode = customerService.insertCustomer(newCustomer);
 
-        if (resultCode == 409)
+        if (resultCode == HttpStatus.CONFLICT.value())
             throw new ResponseStatusException(HttpStatus.CONFLICT);
-        else if (resultCode == 500)
+        else if (resultCode == HttpStatus.INTERNAL_SERVER_ERROR.value())
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
 
         return resultCode;
@@ -57,16 +58,14 @@ public class CustomerController {
 
     @PutMapping("/customer")
     public int updateCustomer(@RequestBody CustomerDTO targetCustomer) {
-        /*CustomerDTO targetCustomer = CustomerDTO.builder()
-                                                .id(id)
-                                                .name(name)
-                                                .information(information).build();*/
 
         int resultCode;
         resultCode = customerService.updateCustomer(targetCustomer);
 
         if (resultCode == 500)
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        else if (resultCode == 409)
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
 
         return resultCode;
     }

@@ -9,7 +9,9 @@ import java.util.List;
 public interface CustomerMapper {
     List<CustomerDTO> selectCustomer();
 
-    CustomerDTO selectCustomer(String id);
+    CustomerDTO selectCustomerWithId(String id);
+
+    CustomerDTO selectCustomerWithName(String name);
 
     void insertCustomer(String id, String name, String information);
 

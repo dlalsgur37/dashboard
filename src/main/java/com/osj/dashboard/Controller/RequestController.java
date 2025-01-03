@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RequestController {
 
-    @RequestMapping("/list/maintance")
-    public String maintance_list() {  return "maintance_list";  }
+    @RequestMapping("/list/maintenance")
+    public String maintenance_list() {  return "maintenance-list";  }
 
     @RequestMapping("/list/customer")
-    public String customer_list() {  return "customer_list";  }
+    public String customer_list() {  return "customer-list";  }
 
-    @RequestMapping("/")
-    public String loginPage() {
+    @RequestMapping("/login")
+    public String login() {
         return "authentication-login";
     }
 

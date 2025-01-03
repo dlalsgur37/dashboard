@@ -52,16 +52,10 @@ public class CustomerService {
     * */
     public int insertCustomer(CustomerDTO newCustomer) {
         List<CustomerDTO> customerList = selectCustomer();
-        String newName = newCustomer.getName();
         try {
-            for (CustomerDTO customer : customerList) {
-                if (customer.getName().equals(newName)) {
-                    System.out.println("Error : duplicate name !!");
-                    return HttpStatus.CONFLICT.value();
-                }
-            }
+            CustomerDTO alreadyCustomer = customerMapper.selectCustomerWithName(newCustomer.getName());
 
-            if (customerList.isEmpty()) {
+            if (alreadyCustomer != null && !alreadyCustomer.getId().equalsIgnoreCase(newCustomer.getId())) {
                 newCustomer.setId("C001");
             } else {
                 String lastId = customerList.get(customerList.size()-1).getId();
@@ -89,7 +83,7 @@ public class CustomerService {
         String customerId = customer.getId();
 
         try {
-            CustomerDTO realCustomer = customerMapper.selectCustomer(customerId);
+            CustomerDTO realCustomer = customerMapper.selectCustomerWithId(customerId);
 
             if (realCustomer.getId().equalsIgnoreCase(customerId)) {
                 customerMapper.deleteCustomer(customerId);
@@ -107,11 +101,17 @@ public class CustomerService {
      * @param customer : CustomerDTO
      * @return int - resultCode
      * resultCode = 200 : success
+     * resultCode = 409 : fail - duplicate name
      * resultCode = 500 : fail - unknown error
      * */
     public int updateCustomer(CustomerDTO customer) {
         try {
-            customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
+            CustomerDTO alreadyCustomer = customerMapper.selectCustomerWithName(customer.getName());
+
+            if(alreadyCustomer != null && !alreadyCustomer.getId().equalsIgnoreCase(customer.getId()))
+                return HttpStatus.CONFLICT.value();
+            else
+                customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
 
             return HttpStatus.OK.value();
         } catch (Exception e) {
