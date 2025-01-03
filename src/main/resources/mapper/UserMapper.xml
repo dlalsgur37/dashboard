@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.osj.dashboard.mapper.UserMapper">
+    <select id="findByUserId">
+        SELECT * FROM user WHERE userid = #{userid}
+    </select>
+
+    <insert id="insertUser" parameterType="com.osj.dashboard.dto.UserDTO">
+        INSERT INTO User (userid, username, password, reg_date, phone_num, internal_num, email,  user_role, dep_id)
+        VALUES (#{userid}, #{username}, #{password}, #{regDate}, #{phoneNum}, #{internalNum}, #{email}, #{userRole}, #{depId});
+    </insert>
+
+    <select id="selectUser">
+        SELECT * FROM user;
+    </select>
+</mapper>

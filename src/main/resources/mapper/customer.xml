@@ -4,10 +4,20 @@
     <select id="selectCustomer">
         SELECT *
         FROM customer
-        WHERE 1 = 1
-        <if test="id != null">
-            AND id=#{id}
-        </if>
+        ;
+    </select>
+
+    <select id="selectCustomerWithId">
+        SELECT *
+        FROM customer
+        WHERE id=#{id}
+        ;
+    </select>
+
+    <select id="selectCustomerWithName">
+        SELECT *
+        FROM customer
+        WHERE name=#{name}
         ;
     </select>
 

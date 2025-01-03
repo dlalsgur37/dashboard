@@ -1,6 +1,9 @@
 
 :root{
-    --info-bg-color: rgba(166, 209, 255, 1);
+    --info-bg-color: #2b7aff;
+    --info-bg-color-hover: #3a84ff;
+    --error-bg-color: #e2525c;
+    --error-bg-color-hover: #e2524c;
 }
 
 .content-container {
@@ -11,7 +14,7 @@
     padding: 20px;
 }
 .open-register-button {
-    background-color: #3292ff;
+    background-color: var(--info-bg-color);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -20,11 +23,11 @@
     cursor: pointer;
 }
 .open-register-button:hover {
-    background-color: #327dff;
+    background-color: var(--info-bg-color);
 }
 
 .delete-button {
-    background-color: #f44336;
+    background-color: var(--error-bg-color);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -33,7 +36,7 @@
     cursor: pointer;
 }
 .delete-button:hover {
-    background-color: #d32f2f;
+    background-color: var(--error-bg-color-hover);
 }
 
 .delete-button:disabled {
@@ -51,6 +54,10 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    overflow: auto;
+}
+.info-modal-form {
+    height: inherit;
 }
 .register-modal-content,
 .info-modal-content {
@@ -80,6 +87,8 @@
     text-align: left;
     font-weight: bold;
 }
+.info-modal-body input,
+.info-modal-body textarea,
 .register-modal-body input,
 .register-modal-body textarea {
     width: 100%;
@@ -87,6 +96,15 @@
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+.toast-editor {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: auto;
+}
+.toast-editor > div * {
+    text-align: left;
 }
 .register-modal-footer,
 .info-modal-footer{
@@ -100,7 +118,6 @@
 .register-submit-btn,
 .info-close-btn,
 .info-submit-btn {
-    background-color: #f44336;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -111,23 +128,20 @@
 }
 .register-close-btn,
 .info-close-btn {
-    background-color: #f44336;
-    color: white;
+    background-color: var(--error-bg-color);
 }
 .register-close-btn:hover,
 .info-close-btn:hover {
-    background-color: #d32f2f;
+    background-color: var(--error-bg-color-hover);
 }
 .register-submit-btn,
 .info-submit-btn {
-    background-color: #3292ff;
-    color: white;
+    background-color: var(--info-bg-color);
 }
 .register-submit-btn:hover,
 .info-submit-btn:hover {
-    background-color: #327dff;
+    background-color: var(--info-bg-color-hover);
 }
-
 .error-modal {
     display: none;
     position: fixed;
@@ -139,35 +153,34 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 .error-modal-content {
-    background-color: #ffdddd;
+    background-color: var(--error-bg-color);
     margin: 20% auto;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 500px;
     text-align: center;
 }
 .error-modal-content h3 {
     margin: 0 0 10px;
-    color: #d32f2f;
+    color: var(--error-bg-color);
 }
 .error-modal-content p {
     margin: 0 0 20px;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
-    color: black;
+    color: white;
 }
 .error-modal-content .error-close-btn {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #d32f2f;
+    background-color: var(--error-bg-color);
     color: white;
+    font-weight: 700;
     font-size: 14px;
-    cursor: pointer;
 }
 .error-modal-content .error-close-btn:hover {
-    background-color: #b71c1c;
+    background-color: var(--error-bg-color-hover);
 }
 .notice-modal {
     display: none;
@@ -218,12 +231,16 @@
     font-size: medium;
     width: 80%;
 }
+.customer-information > .toastui-editor-contents {
+    height: 100px;
+    overflow: hidden;
+}
 .customer-information > div * {
     text-align: left;
 }
 
 table.dataTable.display > tbody > tr.selected * {
-    color: #ffffff;
+    color: white;
 }
 
 .ri--ball-pen-fill {
