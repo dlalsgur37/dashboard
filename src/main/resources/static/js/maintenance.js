@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.text())
             .then(() => {
-                noticeMessage.textContent = '고객사가 성공적으로 등록되었습니다.';
+                noticeMessage.textContent = '리스트를 성공적으로 등록되었습니다.';
                 noticeModal.style.display = 'block';
                 registerModal.style.display = 'none'; // 모달 닫기
                 document.getElementById('register-modal-form').reset(); // 폼 초기화
