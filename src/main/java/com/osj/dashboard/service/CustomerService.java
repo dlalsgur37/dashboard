@@ -55,7 +55,7 @@ public class CustomerService {
         try {
             CustomerDTO alreadyCustomer = customerMapper.selectCustomerWithName(newCustomer.getName());
 
-            if (alreadyCustomer != null && !alreadyCustomer.getId().equalsIgnoreCase(newCustomer.getId())) {
+            if (alreadyCustomer == null) {
                 newCustomer.setId("C001");
             } else {
                 String lastId = customerList.get(customerList.size()-1).getId();

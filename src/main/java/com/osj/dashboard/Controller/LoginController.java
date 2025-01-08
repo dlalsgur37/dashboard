@@ -31,12 +31,10 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public int Login(@RequestParam("userid") String userid,
+    public int Login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpServletResponse response)throws IOException{
-        UserDTO loginUser = new UserDTO();
-        loginUser.setUserid(userid);
-        loginUser.setPassword(loginUser.getPassword());
+        UserDTO loginUser = UserDTO.builder().username(username).password(password).build();
         int result = userDetailsService.checkUser(loginUser);
 
         if(result == HttpStatus.BAD_REQUEST.value()){

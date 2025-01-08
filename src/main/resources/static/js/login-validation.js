@@ -1,8 +1,8 @@
 function loginForm() {
-    const userId = document.getElementById("userid").value;
+    const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     const userData = {
-        "userid": userId,
+        "username": username,
         "password": password
     }
 
@@ -22,7 +22,7 @@ function loginForm() {
             }
         })
         .catch(error => {
-            alert(userId + "아이디 또는 비밀번호가 틀렸습니다.\n다시 시도 해주세요." + password);
-            console.error(userId + "아이디 또는 비밀번호가 틀렸습니다." + password);
+            alert(username + "아이디 또는 비밀번호가 틀렸습니다.\n다시 시도 해주세요." + password);
+            console.error(username + "아이디 또는 비밀번호가 틀렸습니다." + password);
         });
 }

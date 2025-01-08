@@ -15,10 +15,10 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
 
     // 폼 데이터 준비
     var formData = {
-        userId: document.getElementById('user-id').value,
+        username: document.getElementById('username').value,
         password: password,
         email: document.getElementById('email').value,
-        username: document.getElementById('user-name').value,
+        nickname: document.getElementById('nickname').value,
         department: document.getElementById('department').value,
         cellPhone: document.getElementById('cellphone').value,
         officePhone: document.getElementById('office-phone').value,

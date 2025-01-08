@@ -1,16 +1,21 @@
 package com.osj.dashboard.service;
 
+import com.osj.dashboard.context.UserContext;
 import com.osj.dashboard.dto.UserDTO;
 import com.osj.dashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService  {
@@ -33,18 +38,18 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
         if (user == null) {
             throw new UsernameNotFoundException("User not found" + userId);
         }
-        return User.builder()
-                .username(user.getUserid())
-                .password(user.getPassword())
-                .roles("user")
-                .build();
 
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        UserContext userContext = new UserContext(user, authorities);
+
+        return userContext;
     }
 
     public int checkUser(UserDTO loginUser) {
 
         try {
-            UserDTO user = findByUserId(loginUser.getUserid());
+            UserDTO user = findByUserId(loginUser.getUsername());
             String encodedPwd = passwordEncoder.encode(loginUser.getPassword());
 
             if (user == null) {

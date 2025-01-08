@@ -27,7 +27,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam("userid") String userid,
+    public String registerUser(@RequestParam("nickname") String nickname,
                                @RequestParam("username") String username,
                                @RequestParam("password") String password,
                                @RequestParam("confirmPassword") String confirmPassword,
@@ -38,14 +38,14 @@ public class RegisterController {
                                HttpServletResponse response)throws IOException {
         // User 객체 생성 및 데이터 저장
         UserDTO user = UserDTO.builder()
-                .userid(userid)
+                .nickname(nickname)
                 .username(username)
                 .password(passwordEncoder.encode(password))
-                .email(email)
-                .depId(depId)
                 .regDate(LocalDateTime.now())
                 .internalNum(internal_num)
                 .phoneNum(phoneNum)
+                .email(email)
+                .depId(depId)
                 .userRole("ROLE_USER")
                 .build();
 

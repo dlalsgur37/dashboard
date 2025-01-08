@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/index", "/loginForm").hasRole("user")
                         .anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin
-                        .usernameParameter("userid")
+                        .usernameParameter("username")
                         .passwordParameter("password")
                         .loginProcessingUrl("/login")
                         .loginPage("/login")
