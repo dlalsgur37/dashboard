@@ -66,7 +66,7 @@ public class MaintenanceService {
                 newMaintenance.setId(String.format("M%03d", idx));
             }
 
-            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getName(), newMaintenance.getDescription(), newMaintenance.getSolve(),newMaintenance.getRequest_date());
+            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getName(),  newMaintenance.getDescription(), newMaintenance.getSolve(),newMaintenance.getRequest_date());
             return HttpStatus.CREATED.value();
         } catch (Exception e) {
             return HttpStatus.INTERNAL_SERVER_ERROR.value();

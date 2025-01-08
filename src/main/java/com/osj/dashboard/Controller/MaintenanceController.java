@@ -2,6 +2,7 @@ package com.osj.dashboard.Controller;
 
 import com.osj.dashboard.dto.MaintenanceDTO;
 import com.osj.dashboard.service.MaintenanceService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,16 @@ public class MaintenanceController {
     }
 
     @GetMapping("/maintenance")
-    public List<MaintenanceDTO> getMaintenanceList() {
+    public List<MaintenanceDTO> getMaintenanceList(HttpSession session) {
         return maintenanceService.selectMaintenance(true);
     }
 
     @PostMapping("/maintenance")
-    public int addMaintenance(String name, String description, String solve, String request_date) {
+    public int addMaintenance(String name, String description, String solve, String request_date, String owner) {
         MaintenanceDTO newMaintenance = MaintenanceDTO.builder()
                                             .id("")
                                             .name(name)
+                                            .name(owner)
                                             .solve(solve)
                                             .request_date(request_date)
                                             .description(description).build();

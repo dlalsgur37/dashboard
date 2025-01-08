@@ -18,13 +18,17 @@ public class MaintenanceDTO {
     private String description;
     private String solve;
     private String request_date;
+    private String owner;
+    private  String customerName;
 
-    public MaintenanceDTO(Map<String, String> customerMap) {
-        this.id = customerMap.get("id");
-        this.name = customerMap.get("name");
-        this.description = customerMap.get("description");
-        this.solve = customerMap.get("solve");
-        this.request_date = customerMap.get("request_date");
+    public MaintenanceDTO(Map<String, String> maintenanceMap) {
+        this.id = maintenanceMap.get("id");
+        this.name = maintenanceMap.get("name");
+        this.owner = maintenanceMap.get("owner");
+        this.description = maintenanceMap.get("description");
+        this.solve = maintenanceMap.get("solve");
+        this.request_date = maintenanceMap.get("request_date");
+        this.customerName = maintenanceMap.get("customerName");
     }
 }
 
