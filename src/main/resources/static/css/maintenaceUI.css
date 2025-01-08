@@ -82,6 +82,7 @@
     text-align: left;
     font-weight: bold;
 }
+
 .register-modal-body input,
 .register-modal-body textarea {
     width: 100%;
@@ -234,8 +235,15 @@ thead th {
     text-align: center !important;
 }
 
-.maintenance-name {
-    text-align: left;
+.maintenance-customerName{
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    min-width: 130px;
+    max-width: 150px;
+}
+.maintenance-name,.maintenance-owner {
+    text-align: center;
     font-weight: bold;
     font-size: medium;
     min-width: 100px;
@@ -275,7 +283,7 @@ thead th {
     display: flex;
     align-items: center;
     gap:  10px; /* 발의자와 발의일자 사이의 간격 조정 */
-    width: 520px;
+    width: 720px;
 }
 
 .form-row label {
@@ -286,29 +294,7 @@ thead th {
     margin-left: 10px; /* 발의일자를 오른쪽으로 이동 */
 }
 
-.suggestionsCustomer {
-    position: absolute;
-    top: 0; /* JavaScript에서 동적으로 설정 */
-    left: 0; /* JavaScript에서 동적으로 설정 */
-    width: auto; /* input의 폭에 맞춤 */
-    max-width: 95px; /* 최대 폭 제한 */
-    max-height: 200px; /* 최대 높이 제한 */
-    overflow-y: auto; /* 스크롤 가능 */
-    background-color: white; /* 배경색 */
-    border: 1px solid #ccc; /* 테두리 */
-    box-shadow: 0 4px 6px rgba(0, 0, 1, 1); /* 그림자 */
-    z-index: 1000; /* 팝업이 항상 최상단에 표시 */
-    display: none; /* 초기에는 숨김 */
-}
-.suggestionsCustomer div {
-    padding: 8px;
-    cursor: pointer;
-}
 
-.suggestionsCustomer div:hover {
-    background-color: #f0f0f0;
-}
-
-#register-customer, #register-name, #register-request_date {
+#register-customer, #register-request_user, #register-request_date ,#register-owner {
     flex: 1; /* 입력 필드의 크기를 동일하게 조정 */
 }
