@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/register","/", "/login","/css/**", "/js/**").permitAll()
-                        .requestMatchers("/index", "/loginForm").hasRole("user")
+                        .requestMatchers("/index", "/loginForm").hasRole("USER")
                         .anyRequest().authenticated())
 				.formLogin(formLogin -> formLogin
                         .usernameParameter("username")
