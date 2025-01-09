@@ -53,9 +53,7 @@ public class CustomerService {
     public int insertCustomer(CustomerDTO newCustomer) {
         List<CustomerDTO> customerList = selectCustomer();
         try {
-            CustomerDTO alreadyCustomer = customerMapper.selectCustomerWithName(newCustomer.getName());
-
-            if (alreadyCustomer == null) {
+            if (customerList == null || customerList.isEmpty()) {
                 newCustomer.setId("C001");
             } else {
                 String lastId = customerList.get(customerList.size()-1).getId();
