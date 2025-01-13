@@ -14,13 +14,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 @Configuration
 public class SecurityConfig {
-
-    private final UserLoginService userLoginService;
-
-    public SecurityConfig(UserLoginService userLoginService) {
-        this.userLoginService = userLoginService;
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

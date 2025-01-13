@@ -2,8 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.osj.dashboard.mapper.UserMapper">
-    <select id="findByUserId" parameterType="com.osj.dashboard.dto.UserDTO">
-        SELECT * FROM user WHERE username = #{username}
+    <select id="findByUserId" resultType="java.util.Map">
+        SELECT *
+        FROM user
+        <if test="department != null">
+            left join department d on user.dep_id = d.id
+        </if>
+        WHERE username = #{username}
     </select>
 
     <insert id="insertUser" parameterType="com.osj.dashboard.dto.UserDTO">
