@@ -20,10 +20,9 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-    @GetMapping("/Dempartment")
-    public List<DepartmentDTO> getDpartment(){
+    @GetMapping("/department")
+    public List<DepartmentDTO> getDepartment(){
         return departmentService.selectDepartment();
     }
-
 
 }
