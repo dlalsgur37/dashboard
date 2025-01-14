@@ -1,7 +1,6 @@
 package com.osj.dashboard.service;
 
 import com.osj.dashboard.context.UserContext;
-import com.osj.dashboard.dto.DepartmentDTO;
 import com.osj.dashboard.dto.UserDTO;
 import com.osj.dashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -37,23 +34,16 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        HashMap<String, Object> userInfoMap = userMapper.findByUserId(userId, "true");
-
-        UserDTO user = new UserDTO().getUserSchema(userInfoMap);
+        UserDTO user = userMapper.findByUserId(userId);
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found" + userId);
         }
 
-        DepartmentDTO departmentDTO = new DepartmentDTO().getDepartmentSchema(userInfoMap);
-
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getUserRole()));
 
-        UserContext userContext = new UserContext(user, authorities);
-        userContext.setDepartment(departmentDTO.getDep_name());
-
-        return userContext;
+        return new UserContext(user, authorities);
     }
 
     public int checkUser(UserDTO loginUser) {

@@ -1,17 +1,14 @@
 package com.osj.dashboard.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     private Integer id;                // PK
     private String nickname;           // 사용자 이름
@@ -21,8 +18,9 @@ public class UserDTO {
     private Integer phoneNum;          // 전화번호
     private Integer internalNum;       // 내부 번호
     private String email;              // 이메일
-    private String depId;              // 부서 ID
     private String userRole;          // 사용자 권한
+
+    private DepartmentDTO departmentDTO;             // 부서
 }
 
 

@@ -1,5 +1,6 @@
 package com.osj.dashboard.Controller;
 
+import com.osj.dashboard.dto.DepartmentDTO;
 import com.osj.dashboard.dto.UserDTO;
 import com.osj.dashboard.mapper.UserMapper;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ public class RegisterController {
                                @RequestParam("confirmPassword") String confirmPassword,
                                @RequestParam("email") String email,
                                @RequestParam("dep_id") String depId,
-                               @RequestParam("phone_num") int phoneNum,
+                               @RequestParam("phone_num") String phoneNum,
                                @RequestParam("internal_num") int internal_num,
                                HttpServletResponse response)throws IOException {
         // User 객체 생성 및 데이터 저장
@@ -43,9 +44,9 @@ public class RegisterController {
                 .password(passwordEncoder.encode(password))
                 .regDate(LocalDateTime.now())
                 .internalNum(internal_num)
-                .phoneNum(phoneNum)
+                .phoneNum(Integer.valueOf(phoneNum))
                 .email(email)
-                .depId(depId)
+                .departmentDTO(DepartmentDTO.builder().id(depId).build())
                 .userRole("ROLE_USER")
                 .build();
 

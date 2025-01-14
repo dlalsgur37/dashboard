@@ -1,25 +1,14 @@
 package com.osj.dashboard.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Map;
-
+@Data
 @Builder
-@Setter
-@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerDTO {
 
     private String id;
     private String name;
     private String information;
-
-    public CustomerDTO(Map<String, String> customerMap) {
-        this.id = customerMap.get("id");
-        this.name = customerMap.get("name");
-        this.information = customerMap.get("information");
-    }
 }
