@@ -72,8 +72,9 @@
 .register-modal-body,
 .info-modal-body {
     margin-top: 30px;
+    margin-bottom: 30px;
     overflow-y: auto; /*by mslim 스크롤 추가*/
-    max-height: 600px;/*by mslim 최대높이추가*/
+    max-height: 80%;/*by mslim 최대높이추가*/
 }
 .register-modal-body label,
 .info-modal-body label {
@@ -233,34 +234,48 @@ table.dataTable.display > tbody > tr.selected * {
 
 thead th {
     text-align: center !important;
+    font-weight: bold;
 }
 
+.maintenance-domain,
 .maintenance-customerName{
     text-align: center;
     font-weight: bold;
-    font-size: medium;
-    min-width: 130px;
-    max-width: 150px;
-}
-.maintenance-name,.maintenance-owner {
-    text-align: center;
-    font-weight: bold;
-    font-size: medium;
+    font-size: small;
     min-width: 100px;
-    max-width: 110px;
+    max-width: 130px;
+}
+
+.maintenance-name,
+.maintenance-owner {
+    text-align: left;
+    font-size: small;
+    min-width: 80px;
+    max-width: 100px;
 }
 
 .maintenance-request_date {
-    text-align: center;
-    font-size: medium;
+    text-align: left;
+    font-size: small;
     min-width: 120px;
     max-width: 140px;
 }
 
 .maintenance-description {
     text-align: left;
-    font-size: medium;
+    font-size: small;
     width: 50%;
+}
+.maintenance-domain{
+    text-align: center;
+    font-size: small;
+    max-width: 300px;
+}
+.maintenance-title{
+    text-align: left;
+    font-size: medium;
+    min-width: 120px;
+    max-width: 130px;
 }
 
 .maintenance-solve{
@@ -283,7 +298,7 @@ thead th {
     display: flex;
     align-items: center;
     gap:  10px; /* 발의자와 발의일자 사이의 간격 조정 */
-    width: 720px;
+    width: 1020px;
 }
 
 .form-row label {
@@ -294,7 +309,14 @@ thead th {
     margin-left: 10px; /* 발의일자를 오른쪽으로 이동 */
 }
 
+#register-domain,
+#register-customer{
+    width:110px;
+}
+#register-type{
+    width:50px;
+}
 
-#register-customer, #register-request_user, #register-request_date ,#register-owner {
+#register-type,#register-domain,#register-customer, #register-request_user, #register-request_date ,#register-owner {
     flex: 1; /* 입력 필드의 크기를 동일하게 조정 */
 }

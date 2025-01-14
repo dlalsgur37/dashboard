@@ -25,14 +25,20 @@ public class MaintenanceController {
     }
 
     @PostMapping("/maintenance")
-    public int addMaintenance(String name, String description, String solve, String request_date, String owner) {
+    public int addMaintenance(String request_user, String title, String description, String solve, String request_date, String owner, String customerId, String domainId, String type) {
         MaintenanceDTO newMaintenance = MaintenanceDTO.builder()
                                             .id("")
-                                            .name(name)
-                                            .name(owner)
+                                            .request_user(request_user)
+                                            .owner(owner)
                                             .solve(solve)
                                             .request_date(request_date)
+                                            .customerId(customerId)
+                                            .domainId(domainId)
+                                            .type(type)
+                                            .title(title)
                                             .description(description).build();
+
+
         int resultCode;
 
         resultCode = maintenanceService.insertMaintenance(newMaintenance);

@@ -2,6 +2,19 @@ let maintenanceTable = null;
 let maintenanceData = null;
 let searchList =null;
 
+    let leRequest_user =null;
+    let leDescription = null;
+    let leTitle=null;
+    let leType=null;
+    let leSolve=null;
+    let leRequest_date= null;
+    let leCustomerName= null;
+    let leCustomerId= null;
+    let leDomainName= null;
+    let leDomainId= null;
+    let leOwner= null;
+    let leRequestDate=null;
+
 function initmaintenanceTable() {
     fetch('/maintenance', {
             method: 'GET'
@@ -18,19 +31,21 @@ function initmaintenanceTable() {
                         targets: 0,
                         width: '30px'
                     },
-                    {targets: 1, className: "maintenance-customerName"},
-                    {targets: 2, className: "maintenance-name"},
-                    {targets: 3, className: "maintenance-request_date"},
-                    {targets: 4, className: "maintenance-owner"},
+                    {targets: 1, className: "maintenance-domain"},
+                    {targets: 2, className: "maintenance-customerName"},
+                    {targets: 3, className: "maintenance-name"},
+                    {targets: 4, className: "maintenance-request_date"},
+                    {targets: 5, className: "maintenance-owner"},
+                    {targets: 6, className: "maintenance-title"},
                     {
-                        targets: 5,
+                        targets: 7,
                         className: "maintenance-description",
                         orderable: false,
                         searchable: false
 
                     },
                     {
-                        targets: 6,
+                        targets: 8,
                         className: "maintenance-solve",
                         orderable: false,
                         width: '40%',
@@ -39,10 +54,12 @@ function initmaintenanceTable() {
                 ],
                 columns: [
                     {"data": null},
+                    {"data": "domainName"},
                     {"data": "customerName"},
-                    {"data": "name"},
+                    {"data": "request_user"},
                     {"data": "request_date"},
                     {"data": "owner"},
+                    {"data": "title"},
                     {"data": "description"},
                     {"data": "solve"}
                 ],
@@ -55,7 +72,7 @@ function initmaintenanceTable() {
             });
         })
         .then(() => {
-            $(".maintenance-description").each(function (index) {
+            $(".maintenance-solve").each(function (index) {
                 if (index !== 0) {
                     new toastui.Editor.factory({
                         el: this,
@@ -76,16 +93,46 @@ function initmaintenanceTable() {
             });
 
             maintenanceTable.on('dblclick', 'tr', function () {
+
+                $('#info-modal-footer').css('display', 'block');
+                $('#register-modal-footer').css('display', 'none');
+
+
+
                 maintenanceData = maintenanceTable.row(this).data();
-                $('#maintenance-name').text(maintenanceData.name);
-                let infoModal = $('#infoModal');
+                setRedOnlyFromRegister(true);
+                leRequest_user.value=maintenanceData.request_user;
+                leOwner.value=maintenanceData.owner;
+                leType.value=maintenanceData.type;
+                leCustomerName.value=maintenanceData.customerName;
+                leCustomerId.value=maintenanceData.customerId;
+                leDomainName.value=maintenanceData.domainName;
+                leDomainId.value=maintenanceData.domainId;
+                leTitle.value=maintenanceData.title;
+                leDescription.value=maintenanceData.description;
+
+                //leRequestDate = maintenanceData.request_date;
+
+                console.log(maintenanceData);
+
+
                 new toastui.Editor.factory({
-                    el: document.querySelector('#info-editor'),
+                    //el: document.querySelector('#info-editor'),
+                    el: document.querySelector('#register-solve'),
                     height: window.innerHeight*3/7 + 'px',
                     viewer: true,
-                    initialValue: maintenanceData.description
+                    //initialValue: maintenanceData.description
+                    initialValue: maintenanceData.solve
                 });
-                infoModal.css('display', 'block');
+
+                flatpickr("#register-request_date", {
+                    clickOpens: false, // 달력 팝업 비활성화
+                    defaultDate: maintenanceData.request_date
+                });
+
+                let registerModal = $('#registerModal');
+                registerModal.css('display', 'block');
+
             });
         })
         .then(() => {
@@ -139,13 +186,125 @@ function initmaintenanceTable() {
         });
 }
 
+function getCombo()
+{
+    let domainListBox = null;
+    let customerListBox = document.getElementById('UL-customerList');
+    fetch('/Dempartment') // 백엔드 엔드포인트 URL
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            domainListBox = document.getElementById('UL-domainList');
+            // 기존 내용 제거 (필요 시)
+            domainListBox.innerHTML = '';
+
+            // 데이터를 반복하여 li 태그 생성 및 추가
+            let innerLI = "";
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.id = item.id; // ID 설정
+                li.role = 'option'; // ARIA 속성 추가
+                li.textContent = item.dep_name; // 텍스트 추가
+                domainListBox.appendChild(li);
+
+            });
+
+            const comboboxNode = document.getElementById('register-domain');
+            const hiddenIdNode = document.getElementById('register-domainId');
+            const buttonNode = document.getElementById('domain-button');
+            new ComboboxAutocomplete(comboboxNode, buttonNode, domainListBox, hiddenIdNode);
+
+        })
+        .catch(error => {
+            console.error('Error fetching options:', error);
+        });
+
+
+    fetch('/customer') // 백엔드 엔드포인트 URL
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            //customerListBox = document.getElementById('UL-customerList');
+            // 기존 내용 제거 (필요 시)
+            customerListBox.innerHTML = '';
+
+            // 데이터를 반복하여 li 태그 생성 및 추가
+            let innerLI = "";
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.id = item.id; // ID 설정
+                li.role = 'option'; // ARIA 속성 추가
+                li.textContent = item.name; // 텍스트 추가
+                customerListBox.appendChild(li);
+
+            });
+
+            const comboboxNode = document.getElementById('register-customer');
+            const hiddenIdNode = document.getElementById('register-customerId');
+            const buttonNode = document.getElementById('customer-button');
+            new ComboboxAutocomplete(comboboxNode, buttonNode, customerListBox, hiddenIdNode);
+
+            // Initialize comboboxes
+            //var comboboxes = document.querySelectorAll('.combobox-list');
+            /*for (var i = 0; i < comboboxes.length; i++) {
+                var combobox = comboboxes[i];
+                var comboboxNode = combobox.querySelector('input');
+                var buttonNode = combobox.querySelector('button');
+                var listboxNode = combobox.querySelector('[role="listbox"]');
+                new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
+            }*/
+
+        })
+        .catch(error => {
+            console.error('Error fetching options:', error);
+        });
+}
+
+function getElementFromRegister(){
+    leRequest_user = document.getElementById('register-request_user');
+    leDescription = document.getElementById('register-description');
+    leTitle=document.getElementById('register-title');
+    leType=document.getElementById('register-type');
+    //leSolve=editor.getMarkdown();
+    leRequest_date= document.getElementById('register-request_date');
+    leCustomerId= document.getElementById('register-customerId');
+    leCustomerName= document.getElementById('register-customer');
+    leDomainId= document.getElementById('register-domainId');
+    leDomainName= document.getElementById('register-domain');
+    leOwner= document.getElementById('register-owner');
+    leRequestDate = document.getElementById('register-request_date');
+}
+
+function setRedOnlyFromRegister(bool){
+    leRequest_user.readOnly=bool;
+    leOwner.readOnly=bool;
+    leType.readOnly=bool;
+    leCustomerName.readOnly=bool;
+    leCustomerId.readOnly=bool;
+    leDomainName.readOnly=bool;
+    leDomainId.readOnly=bool;
+    leTitle.readOnly=bool;
+    leDescription.readOnly=bool;
+    leRequestDate.readOnly=bool;
+}
+
 $(document).ready(function () {
 
     initmaintenanceTable();
+    getCombo();
+    getElementFromRegister();
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-
 
     //등록
     const openRegisterBtn = document.getElementById('openRegisterButton');
@@ -153,8 +312,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeRegisterModalBtn = document.getElementById('closeRegisterModal');
     const registerBtn = document.getElementById('registerMaintenance');
 
+    //Footer
+    const inforFooter = document.getElementById('info-modal-footer');
+    const registerFooter = document.getElementById('register-modal-footer');
+
     //내용
-    const infoModal = document.getElementById('infoModal');
+    //const infoModal = document.getElementById('infoModal');
     const closeInfoModalBtn = document.getElementById('closeInfoModal');
     const modifyInfoBtn = document.getElementById('modifiyMaintenance');
     const applyInfoBtn = document.getElementById('applyMaintenance');
@@ -173,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let maintenanceEditor = null;
     const editor = new toastui.Editor({
-        el: document.querySelector('#register-editor'), // 에디터를 적용할 요소 (컨테이너)
+        el: document.querySelector('#register-solve'), // 에디터를 적용할 요소 (컨테이너)
         height: '400px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
         initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
         initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
@@ -188,66 +351,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    //[B]mslim 유지보수 정보 테스트용
-
-    //[E]mslim 유지보수 정보 테스트용
 
 
     // 등록창 열기
     openRegisterBtn.addEventListener('click', function () {
         registerModal.style.display = 'block';
+        registerFooter.style.display='block';
 
+        document.getElementById('register-modal-form').reset();
 
+        flatpickr("#register-request_date", {
+            dateFormat: "Y-m-d", // 날짜 형식
+            locale: "ko", // 한국어 설정
+            defaultDate: new Date() // 오늘날짜 지정
+        });
 
-        let listBox = document.getElementById('UL-customerList');
-        fetch('/customer') // 백엔드 엔드포인트 URL
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                listBox = document.getElementById('UL-customerList');
-                // 기존 내용 제거 (필요 시)
-                listBox.innerHTML = '';
+        setRedOnlyFromRegister(false);
 
-                console.log("test : "+ data);
-                // 데이터를 반복하여 li 태그 생성 및 추가
-                let innerLI ="";
-                data.forEach(item => {
-                    const li = document.createElement('li');
-                    li.id = item.id; // ID 설정
-                    li.role = 'option'; // ARIA 속성 추가
-                    li.textContent = item.name; // 텍스트 추가
-                    listBox.appendChild(li );
-
-                });
-
-                const comboboxNode = document.getElementById('register-customer');
-                const hiddenIdNode = document.getElementById('register-customerId');
-                const buttonNode = document.getElementById('customer-button');
-                new ComboboxAutocomplete(comboboxNode, buttonNode, listBox,hiddenIdNode);
-
-                // Initialize comboboxes
-                //var comboboxes = document.querySelectorAll('.combobox-list');
-                /*for (var i = 0; i < comboboxes.length; i++) {
-                    var combobox = comboboxes[i];
-                    var comboboxNode = combobox.querySelector('input');
-                    var buttonNode = combobox.querySelector('button');
-                    var listboxNode = combobox.querySelector('[role="listbox"]');
-                    new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
-                }*/
-
-            })
-            .catch(error => {
-                console.error('Error fetching options:', error);
-            });
     });
 
     // 등록창 닫기
     closeRegisterModalBtn.addEventListener('click', function () {
         registerModal.style.display = 'none';
+        registerFooter.style.display='none';
         editor.setMarkdown('');
     });
 
@@ -264,28 +390,41 @@ document.addEventListener('DOMContentLoaded', function () {
     // 유지보수 정보창 닫기
     closeInfoModalBtn.addEventListener('click', function () {
         if (this.textContent === '닫기')
-            infoModal.style.display = 'none';
+            //infoModal.style.display = 'none';
+            registerModal.style.display = 'none';
         else if (this.textContent === '취소') {
             new toastui.Editor.factory({
-                el: document.querySelector('#info-editor'),
+                el: document.querySelector('#register-solve'),
                 height: window.innerHeight*3/7 + 'px',
                 viewer: true,
-                initialValue: maintenanceData.description
+                initialValue: maintenanceData.solve
             });
             this.textContent = '닫기';
             modifyInfoBtn.style.display = 'block';
             applyInfoBtn.style.display = 'none';
+
+            inforFooter.style.display='none';
+            registerModal.style.display = 'none';
         }
+
     });
 
     // 유지보수 리스트 정보 수정
     modifyInfoBtn.addEventListener('click', function () {
+        setRedOnlyFromRegister(false);
         maintenanceEditor = new toastui.Editor.factory({
-            el: document.querySelector('#info-editor'),
+            //el: document.querySelector('#info-editor'),
+            el: document.querySelector('#register-solve'),
             height: window.innerHeight*3/7 + 'px',
             initialEditType: 'markdown',
             previewStyle: 'vertical',
-            initialValue: maintenanceData.description
+            initialValue: maintenanceData.solve
+        });
+
+        flatpickr("#register-request_date", {
+            dateFormat: "Y-m-d", // 날짜 형식
+            locale: "ko", // 한국어 설정
+            defaultDate: maintenanceData.request_date
         });
         closeInfoModalBtn.textContent = '취소';
         modifyInfoBtn.style.display = 'none';
@@ -296,8 +435,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const editmaintenanceData = {
             id: maintenanceData.id,
             name: maintenanceData.name,
-            description: maintenanceEditor.getMarkdown(),
-            solve: maintenanceData.solve
+            description: maintenanceData.description,
+            solve: maintenanceEditor.getMarkdown()
         };
         fetch('/maintenance', {
             method: 'PUT',
@@ -326,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(() => {
                 maintenanceTable.destroy();
                 initmaintenanceTable();
+                inforFooter.style.display='none';
             })
             .catch(error => {
                 if (error === 500) {
@@ -338,10 +478,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // 유지보수 리스트 등록 버튼 클릭 (Ajax 요청)
     registerBtn.addEventListener('click', function () {
         const maintenanceData = {
-            name: document.getElementById('register-name').value,
-            description: editor.getMarkdown(),
-            solve: document.getElementById('register-solve').value,
-            request_date: document.getElementById('register-request_date').value
+            request_user: document.getElementById('register-request_user').value,
+            description: document.getElementById('register-description').value,
+            title: document.getElementById('register-title').value,
+            type: document.getElementById('register-type').value,
+            solve: editor.getMarkdown(),
+            request_date: document.getElementById('register-request_date').value,
+            customerId: document.getElementById('register-customerId').value,
+            domainId: document.getElementById('register-domainId').value,
+            owner: document.getElementById('register-owner').value
         };
 
         // Ajax 요청

@@ -34,11 +34,13 @@
           <thead >
           <tr>
             <th></th>
+            <th>도메인</th>
             <th>고객사</th>
             <th>발의자</th>
             <th>발의일자</th>
             <th>담당자</th>
-            <th>발의내용</th>
+            <th>Title</th>
+            <th>Description</th>
             <th>해결/진행상황</th>
           </tr>
           </thead>
@@ -48,16 +50,32 @@
     <!-- Content End -->
 
     <!-- 등록 모달 창 Start -->
-    <div id="suggestionsCustomer" class="suggestions"></div>
+
     <div class="register-modal" id="registerModal">
       <div class="register-modal-content">
-        <div class="register-modal-header">유지보수 등록</div>
+        <div class="register-modal-header">유지보수</div>
         <div class="register-modal-body">
           <form id="register-modal-form">
             <div class="form-row">
 
-              <!--START ---- customer commbo-->
+              <!--START ---- customer commbo1-->
+              <label for="register-domain">도메인</label>
+              <div class="combobox combobox-list" >
+                <div class="group">
+                  <input id="register-domain" class="cb_edit" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="UL-domainList">
+                  <input type="hidden" id="register-domainId" name="register-customerId"  />
+                  <button id="domain-button" tabindex="-1" aria-label="States" aria-expanded="true" aria-controls="UL-domainList">
+                    <svg width="18" height="16" aria-hidden="false" focusable="false" style="forced-color-adjust:auto">
+                      <polygon class="arrow" stroke-width="0" fill-opacity="0.75" fill="currentcolor" points="3,6 15,6 9,14"></polygon>
+                    </svg>
+                  </button>
+                </div>
+                <ul id="UL-domainList" role="listbox" aria-label="States" >
+                </ul>
+              </div>
+              <!--END ---- customer commbo1-->
 
+              <!--START ---- customer commbo2-->
               <label for="register-customer">고객사</label>
               <div class="combobox combobox-list">
                 <div class="group">
@@ -75,8 +93,7 @@
                   <li id="lb1-ar" role="option">KT&G 정비부</li>-->
                 </ul>
               </div>
-
-              <!--END ---- customer commbo-->
+              <!--END ---- customer commbo2-->
 
 
 
@@ -89,23 +106,34 @@
               <label for="register-owner">담당자</label>
               <!--<input type="text" id="register-owner" name="register-owner" th:value="${username}" required />-->
               <input type="text" id="register-owner" name="register-owner"  required />
+              <input type="hidden" id="register-ownerId" name="register-ownerId"  required />
 
+              <label for="register-type">유형</label>
+              <input type="text" id="register-type" name="register-type" required />
 
             </div>
 
 
-
-            <label for="register-editor">내용</label>
-            <div id="register-editor"></div>
+            <label for="register-title"> Title</label>
+            <input type="text" id="register-title" name="register-title" />
+            <label for="register-description">Description</label>
+            <textarea  id="register-description" name="register-description" ></textarea>
             <label for="register-solve"> 해결/진행상황</label>
-            <input type="text" id="register-solve" name="register--solve" />
+            <div id="register-solve"  ></div>
           </form>
         </div>
 
 
-        <div class="register-modal-footer">
+        <div class="register-modal-footer" id ="register-modal-footer" >
           <button class="register-submit-btn" id="registerMaintenance">등록</button>
           <button class="register-close-btn" id="closeRegisterModal">취소</button>
+        </div>
+
+        <div class="info-modal-footer" id ="info-modal-footer"  style="display: none">
+          <button class="info-submit-btn" id="modifiyMaintenance">수정</button>
+          <button class="info-submit-btn" id="applyMaintenance" style="display: none">적용</button>
+          <button class="info-close-btn" id="closeInfoModal">닫기</button>
+
         </div>
       </div>
 
@@ -116,7 +144,7 @@
 
 
     <!-- 유지보수 정보 모달 창 Start -->
-    <div class="info-modal" id="infoModal">
+    <!--<div class="info-modal" id="infoModal">
       <div class="info-modal-content">
         <div class="info-modal-body">
           <form id="info-modal-form">
@@ -131,7 +159,7 @@
           <button class="info-close-btn" id="closeInfoModal">닫기</button>
         </div>
       </div>
-    </div>
+    </div>-->
     <!-- 유지보수 정보  모달 창 End -->
 
     <!-- 알림 팝업 Start -->

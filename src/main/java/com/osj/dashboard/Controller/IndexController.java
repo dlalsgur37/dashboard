@@ -19,6 +19,7 @@ public class IndexController {
         UserContext userContext = (UserContext) authentication.getPrincipal();
 
         session.setAttribute("username", userContext.getUsername());
+        session.setAttribute("userNickname", userContext.getNickname());
         // 모델에 사용자 정보 추가
         model.addAttribute("username", userContext.getNickname());
 

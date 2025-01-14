@@ -11,7 +11,9 @@ public interface MaintenanceMapper {
 
     MaintenanceDTO selectMaintenance(String id);
 
-    void insertMaintenance(String id, String name, String description, String solve, String request_date);
+    void insertMaintenance(String id, String request_user,String title, String description, String solve, String request_date, String type);
+
+    void insertMaintenanceList(String user_id, String newId, String customerId, String domainId);
 
     void deleteMaintenance(String id);
 

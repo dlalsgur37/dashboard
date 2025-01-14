@@ -4,27 +4,35 @@
     <select id="selectMaintenance">
         SELECT
         m.id,
-        m.request_user,
-        m.description,
-        m.solve,
-        DATE_FORMAT(m.request_date, '%Y-%m-%d') AS formatted_date,
-        u.username AS owner,
-        c.name AS customernamer
+        IFNULL(m.title, '') AS title,
+        IFNULL(m.request_user, '') AS request_user,
+        IFNULL(m.description, '') AS description,
+        IFNULL(m.solve, '') AS solve,
+        IFNULL(m.type, '') AS type,
+        DATE_FORMAT(m.request_date, '%Y-%m-%d') AS request_date,
+        IFNULL(u.nickname, 'Unknown') AS owner, -- NULL일 경우 기본값
+        IFNULL(c.name, 'No Customer') AS customerName,
+        IFNULL(ml.customer_id, 0) AS customerId,
+        IFNULL(d.id, 0) AS domainId,
+        IFNULL(d.dep_name, 'No Department') AS domainName
         FROM maintenance m
         LEFT JOIN maintenance_list ml ON m.id = ml.maintenance_id
         LEFT JOIN user u ON ml.user_id = u.id
-        LEFT JOIN customer c ON ml.customer_id=c.id
+        LEFT JOIN customer c ON ml.customer_id = c.id
+        LEFT JOIN department d ON ml.department_id = d.id
         WHERE 1 = 1
         <if test="id != null">
             AND m.id = #{id}
-        </if>
-        ;
+        </if>;
     </select>
 
     <insert id="insertMaintenance">
-        INSERT INTO maintenance(id, request_user, description, solve, request_date) VALUES(#{id}, #{name}, #{description},#{solve},#{request_date});
+        INSERT INTO maintenance(id, request_user, description, title, solve, request_date, type) VALUES(#{id}, #{request_user},#{title}, #{description},#{solve},#{request_date}, #{type});
     </insert>
 
+    <insert id="insertMaintenanceList">
+        INSERT INTO maintenance_list(user_id, maintenance_id, customer_id, department_id) VALUES(#{user_id},#{newId},#{customerId},#{domainId});
+    </insert>
     <delete id="deleteMaintenance">
         DELETE FROM maintenance WHERE id=#{id};
     </delete>

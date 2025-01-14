@@ -1,8 +1,10 @@
 package com.osj.dashboard.Controller;
 
 import com.osj.dashboard.dto.CustomerDTO;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.osj.dashboard.service.CustomerService;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,11 +26,12 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-    public int addCustomer(String name, String information) {
+    public int addCustomer(HttpSession session ,String name, String information) {
         CustomerDTO newCustomer = CustomerDTO.builder()
                                             .id("")
                                             .name(name)
                                            .information(information).build();
+
 
         int resultCode;
 

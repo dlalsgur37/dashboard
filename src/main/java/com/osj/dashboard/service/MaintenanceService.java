@@ -24,17 +24,6 @@ public class MaintenanceService {
     public List<MaintenanceDTO> selectMaintenance(boolean markdown) {
         List<MaintenanceDTO> maintenanceList = selectMaintenance();
 
-        if (markdown) {
-            for (MaintenanceDTO maintenance : maintenanceList) {
-                //markdown 이미지 처리 필요 시
-                /*Parser parser = Parser.builder().build();
-                Node document = new Document();
-                document.appendChild(parser.parse("<div class=\"markdown-body\">" + maintenance.getInformation() + "</div>"));
-                maintenance.setInformation(HtmlRenderer.builder().build().render(document));*/
-            }
-        } else {
-            maintenanceList = selectMaintenance();
-        }
         return maintenanceList;
     }
 
@@ -48,25 +37,30 @@ public class MaintenanceService {
     * */
     public int insertMaintenance(MaintenanceDTO newMaintenance) {
         List<MaintenanceDTO> maintenanceList = selectMaintenance();
-        String newName = newMaintenance.getName();
+
+
+            if (maintenanceList.isEmpty()) {
+                newMaintenance.setId("M0001");
+            } else {
+                String lastId = maintenanceList.get(maintenanceList.size() - 1).getId();
+                String lastIdx = lastId.split("M")[1];
+                int idx = Integer.parseInt(lastIdx) + 1;
+                newMaintenance.setId(String.format("M%04d", idx));
+            }
+
+        String newId = newMaintenance.getId();
         try {
             for (MaintenanceDTO maintenance : maintenanceList) {
-                if (maintenance.getName().equals(newName)) {
+                if (maintenance.getId().equals(newId)) {
                     System.out.println("Error : duplicate name !!");
                     return HttpStatus.CONFLICT.value();
                 }
             }
 
-            if (maintenanceList.isEmpty()) {
-                newMaintenance.setId("M001");
-            } else {
-                String lastId = maintenanceList.get(maintenanceList.size() - 1).getId();
-                String lastIdx = lastId.split("M")[1];
-                int idx = Integer.parseInt(lastIdx) + 1;
-                newMaintenance.setId(String.format("M%03d", idx));
-            }
+            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getRequest_user(), newMaintenance.getDescription(), newMaintenance.getTitle(), newMaintenance.getSolve(),newMaintenance.getRequest_date(), newMaintenance.getType());
 
-            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getName(),  newMaintenance.getDescription(), newMaintenance.getSolve(),newMaintenance.getRequest_date());
+            maintenanceMapper.insertMaintenanceList("2",newId,newMaintenance.getCustomerId(), newMaintenance.getDomainId());
+
             return HttpStatus.CREATED.value();
         } catch (Exception e) {
             return HttpStatus.INTERNAL_SERVER_ERROR.value();
@@ -107,7 +101,7 @@ public class MaintenanceService {
      * */
     public int updateMaintenance(MaintenanceDTO maintenance) {
         try {
-            maintenanceMapper.updateMaintenance(maintenance.getId(), maintenance.getName(), maintenance.getDescription(), maintenance.getSolve());
+            maintenanceMapper.updateMaintenance(maintenance.getId(), maintenance.getRequest_user(), maintenance.getDescription(), maintenance.getSolve());
 
             return HttpStatus.OK.value();
         } catch (Exception e) {
