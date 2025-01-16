@@ -1,20 +1,71 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.osj.dashboard.mapper.MaintenanceMapper">
+    <resultMap id="maintenanceList" type="com.osj.dashboard.dto.MaintenanceListDTO">
+        <association property="userDTO" javaType="com.osj.dashboard.dto.UserDTO">
+            <id property="id" column="user_id" />
+            <result property="nickname" column="nickname" />
+            <result property="username" column="username" />
+            <result property="password" column="password" />
+            <result property="regDate" column="reg_date" />
+            <result property="phoneNum" column="phone_num" />
+            <result property="internalNum" column="internal_num" />
+            <result property="email" column="email" />
+            <result property="userRole" column="user_role" />
+        </association>
+        <association property="maintenanceDTO" javaType="com.osj.dashboard.dto.MaintenanceDTO">
+            <id property="id" column="maintenance_id"/>
+            <result property="requestUser" column="request_user"/>
+            <result property="description" column="description"/>
+            <result property="requestDate" column="request_date"/>
+            <result property="type" column="type"/>
+            <result property="owner" column="owner"/>
+            <result property="title" column="title"/>
+            <result property="solve" column="solve"/>
+        </association>
+        <association property="customerDTO" javaType="com.osj.dashboard.dto.CustomerDTO">
+            <id property="id" column="customer_id"/>
+            <result property="name" column="name"/>
+            <result property="information" column="information"/>
+        </association>
+        <association property="departmentDTO" javaType="com.osj.dashboard.dto.DepartmentDTO">
+            <id property="id" column="department_id"/>
+            <result property="depName" column="dep_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectMaintenanceListWithId" resultMap="maintenanceList">
+        SELECT *
+        FROM maintenance_list ml
+        <if test="userId != null and userId != ''">
+            JOIN user u ON u.id = #{userId} and #{userId} = ml.user_id
+        </if>
+        <if test="maintenanceId != null and maintenanceId != ''">
+            JOIN maintenance m ON m.id = #{maintenanceId} and #{maintenanceId} = ml.maintenance_id
+        </if>
+        <if test="customerId != null and customerId != ''">
+            JOIN customer c ON c.id = #{customerId} and #{customerId} = ml.customer_id
+        </if>
+        <if test="departmentId != null and departmentId != ''">
+            JOIN department d ON d.id = #{departmentId} and #{departmentId} = ml.department_id
+        </if>
+    </select>
+
+
     <select id="selectMaintenance">
         SELECT
         m.id,
-        IFNULL(m.title, '') AS title,
-        IFNULL(m.request_user, '') AS request_user,
-        IFNULL(m.description, '') AS description,
-        IFNULL(m.solve, '') AS solve,
-        IFNULL(m.type, '') AS type,
+        m.title AS title,
+        m.request_user AS request_user,
+        m.description AS description,
+        m.solve AS solve,
+        m.type AS type,
         DATE_FORMAT(m.request_date, '%Y-%m-%d') AS request_date,
-        IFNULL(u.nickname, 'Unknown') AS owner, -- NULL일 경우 기본값
-        IFNULL(c.name, 'No Customer') AS customerName,
-        IFNULL(ml.customer_id, 0) AS customerId,
-        IFNULL(d.id, 0) AS domainId,
-        IFNULL(d.dep_name, 'No Department') AS domainName
+        u.nickname AS owner, -- NULL일 경우 기본값
+        c.name AS customerName,
+        ml.customer_id AS customerId,
+        d.id AS domainId,
+        d.dep_name AS domainName
         FROM maintenance m
         LEFT JOIN maintenance_list ml ON m.id = ml.maintenance_id
         LEFT JOIN user u ON ml.user_id = u.id
@@ -27,11 +78,11 @@
     </select>
 
     <insert id="insertMaintenance">
-        INSERT INTO maintenance(id, request_user, description, title, solve, request_date, type) VALUES(#{id}, #{request_user},#{title}, #{description},#{solve},#{request_date}, #{type});
+        INSERT INTO maintenance(id, request_user, description, title, solve, request_date, type) VALUES(#{id}, #{requestUser},#{title}, #{description},#{solve},#{requestDate}, #{type});
     </insert>
 
     <insert id="insertMaintenanceList">
-        INSERT INTO maintenance_list(user_id, maintenance_id, customer_id, department_id) VALUES(#{user_id},#{newId},#{customerId},#{domainId});
+        INSERT INTO maintenance_list(user_id, maintenance_id, customer_id, department_id) VALUES(#{userId},#{newId},#{customerId},#{domainId});
     </insert>
     <delete id="deleteMaintenance">
         DELETE FROM maintenance WHERE id=#{id};

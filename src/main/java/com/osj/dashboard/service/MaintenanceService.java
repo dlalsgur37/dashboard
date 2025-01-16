@@ -1,6 +1,7 @@
 package com.osj.dashboard.service;
 
 import com.osj.dashboard.dto.MaintenanceDTO;
+import com.osj.dashboard.dto.MaintenanceListDTO;
 import com.osj.dashboard.mapper.MaintenanceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,14 @@ public class MaintenanceService {
     @Autowired
     public MaintenanceService(MaintenanceMapper maintenanceMapper) {
         this.maintenanceMapper = maintenanceMapper;
+    }
+
+    public List<MaintenanceListDTO> selectMaintenanceList() {
+        return maintenanceMapper.selectMaintenanceList();
+    }
+
+    public List<MaintenanceListDTO> selectMaintenanceListWithId(String userId, String maintenanceId, String customerId, String departmentId) {
+        return maintenanceMapper.selectMaintenanceListWithId(userId, maintenanceId, customerId, departmentId);
     }
 
     public List<MaintenanceDTO> selectMaintenance() {
@@ -57,7 +66,7 @@ public class MaintenanceService {
                 }
             }
 
-            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getRequest_user(), newMaintenance.getDescription(), newMaintenance.getTitle(), newMaintenance.getSolve(),newMaintenance.getRequest_date(), newMaintenance.getType());
+            maintenanceMapper.insertMaintenance(newMaintenance.getId(), newMaintenance.getRequestUser(), newMaintenance.getDescription(), newMaintenance.getTitle(), newMaintenance.getSolve(),newMaintenance.getRequestDate(), newMaintenance.getType());
 
             maintenanceMapper.insertMaintenanceList("2",newId,newMaintenance.getCustomerId(), newMaintenance.getDomainId());
 
@@ -101,7 +110,7 @@ public class MaintenanceService {
      * */
     public int updateMaintenance(MaintenanceDTO maintenance) {
         try {
-            maintenanceMapper.updateMaintenance(maintenance.getId(), maintenance.getRequest_user(), maintenance.getDescription(), maintenance.getSolve());
+            maintenanceMapper.updateMaintenance(maintenance.getId(), maintenance.getRequestUser(), maintenance.getDescription(), maintenance.getSolve());
 
             return HttpStatus.OK.value();
         } catch (Exception e) {

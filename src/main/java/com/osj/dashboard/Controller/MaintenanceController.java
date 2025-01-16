@@ -28,10 +28,10 @@ public class MaintenanceController {
     public int addMaintenance(String request_user, String title, String description, String solve, String request_date, String owner, String customerId, String domainId, String type) {
         MaintenanceDTO newMaintenance = MaintenanceDTO.builder()
                                             .id("")
-                                            .request_user(request_user)
+                                            .requestUser(request_user)
                                             .owner(owner)
                                             .solve(solve)
-                                            .request_date(request_date)
+                                            .requestDate(request_date)
                                             .customerId(customerId)
                                             .domainId(domainId)
                                             .type(type)

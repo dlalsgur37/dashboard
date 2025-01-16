@@ -190,7 +190,7 @@ function getCombo()
 {
     let domainListBox = null;
     let customerListBox = document.getElementById('UL-customerList');
-    fetch('/Dempartment') // 백엔드 엔드포인트 URL
+    fetch('/department') // 백엔드 엔드포인트 URL
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
