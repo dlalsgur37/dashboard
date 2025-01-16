@@ -1,6 +1,7 @@
 let customerTable = null;
 let customerData = null;
 let customerList = null;
+let customerInfoEditor = null;
 
 function initCustomerTable() {
     fetch('/customer', {
@@ -62,16 +63,18 @@ function initCustomerTable() {
 
             customerTable.on('dblclick', 'tr', function () {
                 customerData = customerTable.row(this).data();
+                console.log(customerData);
                 const infoModal = $('#infoModal');
                 $('#customer-name').val(customerData.name);
                 infoModal.css('display', 'block');
                 $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
-                new toastui.Editor.factory({
-                    el: document.querySelector('#info-editor'),
-                    height: 'auto',
-                    viewer: true,
-                    initialValue: customerData.information
-                });
+                if (!customerInfoEditor)
+                    customerInfoEditor = new toastui.Editor.factory({
+                        el: document.querySelector('#info-editor'),
+                        height: 'auto',
+                        viewer: true,
+                    });
+                customerInfoEditor.setMarkdown(customerData.information);
             });
         })
         .then(() => {
@@ -154,14 +157,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const deleteBtn = document.getElementById('deleteButton');
 
-    let customerEditor = null;
-    const editor = new toastui.Editor({
+    const registerEditor = new toastui.Editor({
         el: document.querySelector('#register-editor'), // 에디터를 적용할 요소 (컨테이너)
         height: 'auto',                        // 에디터 영역의 높이 값 (OOOpx || auto)
         initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
         initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
         previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
     });
+    $('#register-editor').height(window.innerHeight * 3 / 7 + 'px')
 
     // 등록창 열기
     openRegisterBtn.addEventListener('click', function () {
@@ -171,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 등록창 닫기
     closeRegisterModalBtn.addEventListener('click', function () {
         registerModal.style.display = 'none';
-        editor.setMarkdown('');
+        registerEditor.setMarkdown('');
     });
 
     // 오류 팝업 닫기
@@ -186,19 +189,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 고객사 정보창 닫기
     closeInfoModalBtn.addEventListener('click', function () {
-        if (this.textContent === '닫기')
+        if (this.textContent === '닫기') {
             infoModal.style.display = 'none';
-        else if (this.textContent === '취소') {
+        } else if (this.textContent === '취소') {
             let customerName = $("#customer-name");
             customerName.attr("readonly", true);
             customerName.val(customerData.name);
-            $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
-            new toastui.Editor.factory({
+            $('#info-editor').height(window.innerHeight * 3 / 7 + 'px')
+            customerInfoEditor.destroy();
+            customerInfoEditor = new toastui.Editor.factory({
                 el: document.querySelector('#info-editor'),
                 height: 'auto',
-                viewer: true,
-                initialValue: customerData.information
+                viewer : true,
             });
+            customerInfoEditor.setMarkdown(customerData.information);
             this.textContent = '닫기';
             modifyInfoBtn.style.display = 'block';
             applyInfoBtn.style.display = 'none';
@@ -208,13 +212,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // 고객사 정보 수정
     modifyInfoBtn.addEventListener('click', function () {
         $("#customer-name").removeAttr("readonly");
-        customerEditor = new toastui.Editor.factory({
+        customerInfoEditor = new toastui.Editor.factory({
             el: document.querySelector('#info-editor'),
             height: 'auto',
             initialEditType: 'markdown',
             previewStyle: 'vertical',
-            initialValue: customerData.information
         });
+        customerInfoEditor.setMarkdown(customerData.information);
         $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
         closeInfoModalBtn.textContent = '취소';
         modifyInfoBtn.style.display = 'none';
@@ -226,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const editCustomerData = {
             id: customerData.id,
             name: $("#customer-name").val(),
-            information: customerEditor.getMarkdown()
+            information: customerInfoEditor.getMarkdown()
         };
         fetch('/customer', {
             method: 'PUT',
@@ -247,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(() => {
                 customerData.information = editCustomerData.information;
-                customerEditor = new toastui.Editor.factory({
+                customerInfoEditor = new toastui.Editor.factory({
                     el: document.querySelector('#info-editor'),
                     height: window.innerHeight * 3 / 7 + 'px',
                     viewer: true,
@@ -273,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
     registerBtn.addEventListener('click', function () {
         const customerData = {
             name: document.getElementById('register-name').value,
-            information: editor.getMarkdown(),
+            information: registerEditor.getMarkdown(),
         };
 
         // Ajax 요청
@@ -292,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 noticeModal.style.display = 'block';
                 registerModal.style.display = 'none'; // 모달 닫기
                 document.getElementById('register-modal-form').reset(); // 폼 초기화
-                editor.setMarkdown('');
+                registerEditor.setMarkdown('');
                 customerTable.destroy();
                 initCustomerTable();
             })
@@ -321,6 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 noticeModal.style.display = 'block';
                 customerTable.destroy();
                 initCustomerTable();
+                deleteBtn.disabled = true;
             })
             .catch(error => {
                 if (error === 500) {
