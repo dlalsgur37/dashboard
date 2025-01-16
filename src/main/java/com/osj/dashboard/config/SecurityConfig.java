@@ -1,9 +1,9 @@
 package com.osj.dashboard.config;
 
-import com.osj.dashboard.service.UserLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,8 +50,8 @@ public class SecurityConfig {
                         .key("uniqueAndSecretKey")// 고유 키 설정
                         .tokenValiditySeconds(86400))// 1일 동안 유효
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        .sessionFixation().none()
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionFixation().newSession()
                         .maximumSessions(1) // 한 사용자당 최대 1개의 세션 허용
                         .maxSessionsPreventsLogin(false) // 새로운 로그인이 기존 세션을 만료
                 );

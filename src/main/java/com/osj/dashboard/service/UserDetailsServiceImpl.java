@@ -5,8 +5,10 @@ import com.osj.dashboard.dto.UserDTO;
 import com.osj.dashboard.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,7 +36,13 @@ public class UserDetailsServiceImpl implements UserDetailsService  {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        UserDTO user = userMapper.findByUserId(userId);
+        UserDTO user;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            user = userMapper.findByUserId(userId);
+        } else {
+            return (UserContext) auth.getPrincipal();
+        }
 
         if (user == null) {
             throw new UsernameNotFoundException("User not found" + userId);
