@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .tokenValiditySeconds(86400))// 1일 동안 유효
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .sessionFixation().newSession()
+                        .sessionFixation().changeSessionId()
                         .maximumSessions(1) // 한 사용자당 최대 1개의 세션 허용
                         .maxSessionsPreventsLogin(false) // 새로운 로그인이 기존 세션을 만료
                 );
