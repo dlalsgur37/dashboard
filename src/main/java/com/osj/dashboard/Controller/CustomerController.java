@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-    public int addCustomer(HttpSession session ,String name, String information) {
+    public int addCustomer(String name, String information) {
         CustomerDTO newCustomer = CustomerDTO.builder()
                                             .id("")
                                             .name(name)

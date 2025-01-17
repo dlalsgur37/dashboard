@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -51,11 +52,17 @@ public class CustomerService {
     * resultCode = 409 : fail - duplicate name
     * */
     public int insertCustomer(CustomerDTO newCustomer) {
-        List<CustomerDTO> customerList = selectCustomer();
+        List<CustomerDTO> customerList = selectCustomer( );
         try {
             if (customerList == null || customerList.isEmpty()) {
-                newCustomer.setId("C001");
+                newCustomer.setId(String.format("C%03d", 1));
             } else {
+                for (CustomerDTO customer : customerList) {
+                    if (customer.getName().equals(newCustomer.getName())) {
+                        return HttpStatus.CONFLICT.value();
+                    }
+                }
+
                 String lastId = customerList.get(customerList.size()-1).getId();
                 String lastIdx = lastId.split("C")[1];
                 int idx = Integer.parseInt(lastIdx) + 1;
