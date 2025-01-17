@@ -4,20 +4,14 @@
     <select id="selectCustomer">
         SELECT *
         FROM customer
-        ;
-    </select>
-
-    <select id="selectCustomerWithId">
-        SELECT *
-        FROM customer
-        WHERE id=#{id}
-        ;
-    </select>
-
-    <select id="selectCustomerWithName">
-        SELECT *
-        FROM customer
-        WHERE name=#{name}
+        <where>
+            <if test="id != null and id != ''">
+                id=#{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND name=#{name}
+            </if>
+        </where>
         ;
     </select>
 
@@ -30,6 +24,15 @@
     </delete>
 
     <update id="updateCustomer">
-        UPDATE customer SET name=#{name}, information=#{information} WHERE id=#{id};
+        UPDATE customer
+        <set>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="information != null and information != ''">
+                information=#{information},
+            </if>
+        </set>
+        WHERE id=#{id};
     </update>
 </mapper>

@@ -63,7 +63,6 @@ function initCustomerTable() {
 
             customerTable.on('dblclick', 'tr', function () {
                 customerData = customerTable.row(this).data();
-                console.log(customerData);
                 const infoModal = $('#infoModal');
                 $('#customer-name').val(customerData.name);
                 infoModal.css('display', 'block');
@@ -261,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(() => {
                 customerTable.destroy();
                 initCustomerTable();
+                $("#customer-name").attr("readonly", true);
             })
             .catch(error => {
                 if (error === 500) {

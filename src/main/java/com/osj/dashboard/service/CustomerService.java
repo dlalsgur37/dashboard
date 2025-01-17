@@ -81,7 +81,7 @@ public class CustomerService {
         String customerId = customer.getId();
 
         try {
-            CustomerDTO realCustomer = customerMapper.selectCustomerWithId(customerId);
+            CustomerDTO realCustomer = customerMapper.selectCustomer(customerId, null);
 
             if (realCustomer.getId().equalsIgnoreCase(customerId)) {
                 customerMapper.deleteCustomer(customerId);
@@ -104,12 +104,7 @@ public class CustomerService {
      * */
     public int updateCustomer(CustomerDTO customer) {
         try {
-            CustomerDTO alreadyCustomer = customerMapper.selectCustomerWithName(customer.getName());
-
-            if(alreadyCustomer != null && !alreadyCustomer.getId().equalsIgnoreCase(customer.getId()))
-                return HttpStatus.CONFLICT.value();
-            else
-                customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
+            customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
 
             return HttpStatus.OK.value();
         } catch (Exception e) {
