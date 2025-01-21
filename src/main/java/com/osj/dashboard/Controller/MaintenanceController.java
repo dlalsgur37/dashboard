@@ -25,23 +25,24 @@ public class MaintenanceController {
     }
 
     @PostMapping("/maintenance")
-    public int addMaintenance(String request_user, String title, String description, String solve, String request_date, String owner, String customerId, String domainId, String type) {
-        MaintenanceDTO newMaintenance = MaintenanceDTO.builder()
+    public int addMaintenance(@RequestBody MaintenanceDTO targetMaintenance) {
+    //public int addMaintenance(String requestUser, String title, String description, String solve, String requestDate, String owner, String customerId, String domainId, String type) {
+        /*MaintenanceDTO newMaintenance = MaintenanceDTO.builder()
                                             .id("")
-                                            .requestUser(request_user)
+                                            .requestUser(requestUser)
                                             .owner(owner)
                                             .solve(solve)
-                                            .requestDate(request_date)
+                                            .requestDate(requestDate)
                                             .customerId(customerId)
                                             .domainId(domainId)
                                             .type(type)
                                             .title(title)
-                                            .description(description).build();
+                                            .description(description).build();*/
 
 
         int resultCode;
 
-        resultCode = maintenanceService.insertMaintenance(newMaintenance);
+        resultCode = maintenanceService.insertMaintenance(targetMaintenance);
 
         if (resultCode == 409)
             throw new ResponseStatusException(HttpStatus.CONFLICT);

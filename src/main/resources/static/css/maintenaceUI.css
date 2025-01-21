@@ -254,11 +254,12 @@ thead th {
     max-width: 100px;
 }
 
-.maintenance-request_date {
-    text-align: left;
+
+.maintenance-requestDate {
+    text-align: left !important;
     font-size: small;
-    min-width: 120px;
-    max-width: 140px;
+    min-width: 110px;
+    max-width: 120px;
 }
 
 .maintenance-description {
@@ -317,6 +318,6 @@ thead th {
     width:50px;
 }
 
-#register-type,#register-domain,#register-customer, #register-request_user, #register-request_date ,#register-owner {
+#register-type,#register-domain,#register-customer, #register-requestUser, #register-requestDate ,#register-owner {
     flex: 1; /* 입력 필드의 크기를 동일하게 조정 */
 }

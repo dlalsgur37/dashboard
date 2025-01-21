@@ -62,13 +62,13 @@
               <label for="register-domain">도메인</label>
               <div class="combobox combobox-list" >
                 <div class="group">
-                  <input id="register-domain" class="cb_edit" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="UL-domainList">
+                  <input id="register-domain" class="cb_edit" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="UL-domainList" autocomplete='off'>
                   <input type="hidden" id="register-domainId" name="register-customerId"  />
-                  <button id="domain-button" tabindex="-1" aria-label="States" aria-expanded="true" aria-controls="UL-domainList">
+                  <!--<button id="domain-button" tabindex="-1" aria-label="States" aria-expanded="true" aria-controls="UL-domainList">
                     <svg width="18" height="16" aria-hidden="false" focusable="false" style="forced-color-adjust:auto">
                       <polygon class="arrow" stroke-width="0" fill-opacity="0.75" fill="currentcolor" points="3,6 15,6 9,14"></polygon>
                     </svg>
-                  </button>
+                  </button>-->
                 </div>
                 <ul id="UL-domainList" role="listbox" aria-label="States" >
                 </ul>
@@ -79,7 +79,7 @@
               <label for="register-customer">고객사</label>
               <div class="combobox combobox-list">
                 <div class="group">
-                  <input id="register-customer" class="cb_edit" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="UL-customerList">
+                  <input id="register-customer" class="cb_edit" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="UL-customerList" autocomplete='off'>
                   <input type="hidden" id="register-customerId" name="register-customerId"  />
                   <button id="customer-button" tabindex="-1" aria-label="States" aria-expanded="true" aria-controls="UL-customerList">
                     <svg width="18" height="16" aria-hidden="false" focusable="false" style="forced-color-adjust:auto">
@@ -97,11 +97,11 @@
 
 
 
-              <label for="register-request_user">발의자</label>
-              <input type="text" id="register-request_user" name="register-request_user" required />
+              <label for="register-requestUser">발의자</label>
+              <input type="text" id="register-requestUser" name="register-requestUser" required />
 
-              <label for="register-request_date" class="date-label">발의일자</label>
-              <input type="text" id="register-request_date" name="register-request_date" placeholder="날짜를 선택하세요">
+              <label for="register-requestDate" class="date-label">발의일자</label>
+              <input type="text" id="register-requestDate" name="register-requestDate" placeholder="날짜를 선택하세요">
 
               <label for="register-owner">담당자</label>
               <!--<input type="text" id="register-owner" name="register-owner" th:value="${username}" required />-->

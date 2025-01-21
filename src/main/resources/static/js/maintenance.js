@@ -2,18 +2,22 @@ let maintenanceTable = null;
 let maintenanceData = null;
 let searchList =null;
 
-    let leRequest_user =null;
-    let leDescription = null;
-    let leTitle=null;
-    let leType=null;
-    let leSolve=null;
-    let leRequest_date= null;
-    let leCustomerName= null;
-    let leCustomerId= null;
-    let leDomainName= null;
-    let leDomainId= null;
-    let leOwner= null;
-    let leRequestDate=null;
+    let eLrequestUser =null;
+    let eLDescription = null;
+    let eLTitle=null;
+    let eLType=null;
+    let eLSolve=null;
+    let eLrequestDate= null;
+    let eLCustomerName= null;
+    let eLCustomerId= null;
+    let eLDomainName= null;
+    let eLDomainId= null;
+    let eLOwner= null;
+
+
+let maintenanceEditor = null;
+let editor = null;
+
 
 function initmaintenanceTable() {
     fetch('/maintenance', {
@@ -34,7 +38,7 @@ function initmaintenanceTable() {
                     {targets: 1, className: "maintenance-domain"},
                     {targets: 2, className: "maintenance-customerName"},
                     {targets: 3, className: "maintenance-name"},
-                    {targets: 4, className: "maintenance-request_date"},
+                    {targets: 4, className: "maintenance-requestDate"},
                     {targets: 5, className: "maintenance-owner"},
                     {targets: 6, className: "maintenance-title"},
                     {
@@ -56,8 +60,8 @@ function initmaintenanceTable() {
                     {"data": null},
                     {"data": "domainName"},
                     {"data": "customerName"},
-                    {"data": "request_user"},
-                    {"data": "request_date"},
+                    {"data": "requestUser"},
+                    {"data": "requestDate"},
                     {"data": "owner"},
                     {"data": "title"},
                     {"data": "description"},
@@ -101,33 +105,35 @@ function initmaintenanceTable() {
 
                 maintenanceData = maintenanceTable.row(this).data();
                 setRedOnlyFromRegister(true);
-                leRequest_user.value=maintenanceData.request_user;
-                leOwner.value=maintenanceData.owner;
-                leType.value=maintenanceData.type;
-                leCustomerName.value=maintenanceData.customerName;
-                leCustomerId.value=maintenanceData.customerId;
-                leDomainName.value=maintenanceData.domainName;
-                leDomainId.value=maintenanceData.domainId;
-                leTitle.value=maintenanceData.title;
-                leDescription.value=maintenanceData.description;
+                eLrequestUser.value=maintenanceData.requestUser;
+                eLOwner.value=maintenanceData.owner;
+                eLType.value=maintenanceData.type;
+                eLCustomerName.value=maintenanceData.customerName;
+                eLCustomerId.value=maintenanceData.customerId;
+                eLDomainName.value=maintenanceData.domainName;
+                eLDomainId.value=maintenanceData.domainId;
+                eLTitle.value=maintenanceData.title;
+                eLDescription.value=maintenanceData.description;
 
-                //leRequestDate = maintenanceData.request_date;
+                //leRequestDate = maintenanceData.requestDate;
 
                 console.log(maintenanceData);
 
 
-                new toastui.Editor.factory({
-                    //el: document.querySelector('#info-editor'),
-                    el: document.querySelector('#register-solve'),
-                    height: window.innerHeight*3/7 + 'px',
-                    viewer: true,
-                    //initialValue: maintenanceData.description
-                    initialValue: maintenanceData.solve
-                });
 
-                flatpickr("#register-request_date", {
+                    editor = new toastui.Editor.factory({
+                        el: document.querySelector('#register-solve'), // 에디터를 적용할 요소 (컨테이너)
+                        height: 'auto',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+                        previewStyle: 'vertical',                // 마크다운 프리뷰 스타일 (tab || vertical)
+                        viewer:true
+                    });
+
+
+                editor.setMarkdown(maintenanceData.solve);
+
+                flatpickr("#register-requestDate", {
                     clickOpens: false, // 달력 팝업 비활성화
-                    defaultDate: maintenanceData.request_date
+                    defaultDate: maintenanceData.requestDate
                 });
 
                 let registerModal = $('#registerModal');
@@ -201,14 +207,14 @@ function getCombo()
             domainListBox = document.getElementById('UL-domainList');
             // 기존 내용 제거 (필요 시)
             domainListBox.innerHTML = '';
-
             // 데이터를 반복하여 li 태그 생성 및 추가
             let innerLI = "";
             data.forEach(item => {
                 const li = document.createElement('li');
+
                 li.id = item.id; // ID 설정
                 li.role = 'option'; // ARIA 속성 추가
-                li.textContent = item.dep_name; // 텍스트 추가
+                li.textContent = item.depName; // 텍스트 추가
                 domainListBox.appendChild(li);
 
             });
@@ -269,31 +275,31 @@ function getCombo()
 }
 
 function getElementFromRegister(){
-    leRequest_user = document.getElementById('register-request_user');
-    leDescription = document.getElementById('register-description');
-    leTitle=document.getElementById('register-title');
-    leType=document.getElementById('register-type');
-    //leSolve=editor.getMarkdown();
-    leRequest_date= document.getElementById('register-request_date');
-    leCustomerId= document.getElementById('register-customerId');
-    leCustomerName= document.getElementById('register-customer');
-    leDomainId= document.getElementById('register-domainId');
-    leDomainName= document.getElementById('register-domain');
-    leOwner= document.getElementById('register-owner');
-    leRequestDate = document.getElementById('register-request_date');
+    eLrequestUser = document.getElementById('register-requestUser');
+    eLDescription = document.getElementById('register-description');
+    eLTitle=document.getElementById('register-title');
+    eLType=document.getElementById('register-type');
+    //eLSolve=editor.getMarkdown();
+    eLrequestDate= document.getElementById('register-requestDate');
+    eLCustomerId= document.getElementById('register-customerId');
+    eLCustomerName= document.getElementById('register-customer');
+    eLDomainId= document.getElementById('register-domainId');
+    eLDomainName= document.getElementById('register-domain');
+    eLOwner= document.getElementById('register-owner');
+
 }
 
 function setRedOnlyFromRegister(bool){
-    leRequest_user.readOnly=bool;
-    leOwner.readOnly=bool;
-    leType.readOnly=bool;
-    leCustomerName.readOnly=bool;
-    leCustomerId.readOnly=bool;
-    leDomainName.readOnly=bool;
-    leDomainId.readOnly=bool;
-    leTitle.readOnly=bool;
-    leDescription.readOnly=bool;
-    leRequestDate.readOnly=bool;
+    eLrequestUser.readOnly=bool;
+    eLOwner.readOnly=bool;
+    eLType.readOnly=bool;
+    eLCustomerName.readOnly=bool;
+    eLCustomerId.readOnly=bool;
+    eLDomainName.readOnly=bool;
+    eLDomainId.readOnly=bool;
+    eLTitle.readOnly=bool;
+    eLDescription.readOnly=bool;
+    eLrequestDate.readOnly=bool;
 }
 
 $(document).ready(function () {
@@ -334,17 +340,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const deleteBtn = document.getElementById('deleteButton');
 
-    let maintenanceEditor = null;
-    const editor = new toastui.Editor({
+
+    /*editor = new toastui.Editor({
         el: document.querySelector('#register-solve'), // 에디터를 적용할 요소 (컨테이너)
         height: '400px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
         initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
         initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
         previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
-    });
+    });*/
 
-
-    flatpickr("#register-request_date", {
+    flatpickr("#register-requestDate", {
         dateFormat: "Y-m-d", // 날짜 형식
         locale: "ko", // 한국어 설정
         defaultDate: new Date() // 오늘날짜 지정
@@ -357,10 +362,20 @@ document.addEventListener('DOMContentLoaded', function () {
     openRegisterBtn.addEventListener('click', function () {
         registerModal.style.display = 'block';
         registerFooter.style.display='block';
+        inforFooter.style.display='none';
 
         document.getElementById('register-modal-form').reset();
 
-        flatpickr("#register-request_date", {
+
+            editor = new toastui.Editor.factory({
+                el: document.querySelector('#register-solve'), // 에디터를 적용할 요소 (컨테이너)
+                height: '400px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+                initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+                initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+                previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
+            });
+
+        flatpickr("#register-requestDate", {
             dateFormat: "Y-m-d", // 날짜 형식
             locale: "ko", // 한국어 설정
             defaultDate: new Date() // 오늘날짜 지정
@@ -374,7 +389,9 @@ document.addEventListener('DOMContentLoaded', function () {
     closeRegisterModalBtn.addEventListener('click', function () {
         registerModal.style.display = 'none';
         registerFooter.style.display='none';
-        editor.setMarkdown('');
+        //console.log(editor);
+        if(editor)editor.destroy();
+
     });
 
     // 오류 팝업 닫기
@@ -389,30 +406,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 유지보수 정보창 닫기
     closeInfoModalBtn.addEventListener('click', function () {
-        if (this.textContent === '닫기')
+        if (this.textContent === '닫기') {
             //infoModal.style.display = 'none';
             registerModal.style.display = 'none';
-        else if (this.textContent === '취소') {
-            new toastui.Editor.factory({
+            if(editor)editor.setMarkdown('');
+        }else if (this.textContent === '취소') {
+            editor = new toastui.Editor.factory({
                 el: document.querySelector('#register-solve'),
                 height: window.innerHeight*3/7 + 'px',
                 viewer: true,
                 initialValue: maintenanceData.solve
             });
+
             this.textContent = '닫기';
             modifyInfoBtn.style.display = 'block';
             applyInfoBtn.style.display = 'none';
 
-            inforFooter.style.display='none';
-            registerModal.style.display = 'none';
+            //inforFooter.style.display='none';
+            //registerModal.style.display = 'none';
         }
+
+
 
     });
 
     // 유지보수 리스트 정보 수정
     modifyInfoBtn.addEventListener('click', function () {
         setRedOnlyFromRegister(false);
-        maintenanceEditor = new toastui.Editor.factory({
+        //console.log(maintenanceData.solve);
+        editor = new toastui.Editor.factory({
             //el: document.querySelector('#info-editor'),
             el: document.querySelector('#register-solve'),
             height: window.innerHeight*3/7 + 'px',
@@ -421,22 +443,29 @@ document.addEventListener('DOMContentLoaded', function () {
             initialValue: maintenanceData.solve
         });
 
-        flatpickr("#register-request_date", {
+        flatpickr("#register-requestDate", {
             dateFormat: "Y-m-d", // 날짜 형식
             locale: "ko", // 한국어 설정
-            defaultDate: maintenanceData.request_date
+            defaultDate: maintenanceData.requestDate
         });
         closeInfoModalBtn.textContent = '취소';
         modifyInfoBtn.style.display = 'none';
         applyInfoBtn.style.display = 'block';
     });
 
+    //수정 적용버튼
     applyInfoBtn.addEventListener('click', function () {
         const editmaintenanceData = {
-            id: maintenanceData.id,
-            name: maintenanceData.name,
-            description: maintenanceData.description,
-            solve: maintenanceEditor.getMarkdown()
+            requestUser: document.getElementById('register-requestUser').value,
+            description: document.getElementById('register-description').value,
+            title: document.getElementById('register-title').value,
+            type: document.getElementById('register-type').value,
+            solve: maintenanceEditor.getMarkdown(),
+            requestDate: document.getElementById('register-requestDate').value,
+            customerId: document.getElementById('register-customerId').value,
+            domainId: document.getElementById('register-domainId').value,
+            owner: document.getElementById('register-owner').value
+
         };
         fetch('/maintenance', {
             method: 'PUT',
@@ -454,15 +483,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 applyInfoBtn.style.display = 'none';
             })
             .then(() => {
-                maintenanceData.description = editmaintenanceData.description;
-                maintenanceEditor = new toastui.Editor.factory({
-                    el: document.querySelector('#info-editor'),
+                maintenanceData.solve = editmaintenanceData.solve;
+                editor = new toastui.Editor.factory({
+                    el: document.querySelector('#register-solve'),
                     height: window.innerHeight*3/7 + 'px',
                     viewer: true,
-                    initialValue: maintenanceData.description
+                    initialValue: maintenanceData.solve
                 });
             })
             .then(() => {
+                editor.destroy();
                 maintenanceTable.destroy();
                 initmaintenanceTable();
                 inforFooter.style.display='none';
@@ -477,13 +507,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 유지보수 리스트 등록 버튼 클릭 (Ajax 요청)
     registerBtn.addEventListener('click', function () {
-        const maintenanceData = {
-            request_user: document.getElementById('register-request_user').value,
+        const regi_maintenanceData = {
+            requestUser: document.getElementById('register-requestUser').value,
             description: document.getElementById('register-description').value,
             title: document.getElementById('register-title').value,
             type: document.getElementById('register-type').value,
             solve: editor.getMarkdown(),
-            request_date: document.getElementById('register-request_date').value,
+            requestDate: document.getElementById('register-requestDate').value,
             customerId: document.getElementById('register-customerId').value,
             domainId: document.getElementById('register-domainId').value,
             owner: document.getElementById('register-owner').value
@@ -492,10 +522,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // Ajax 요청
         fetch('/maintenance', {
             method: 'POST',
-            headers: {
+            /*headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             },
-            body: new URLSearchParams(maintenanceData),
+            body: new URLSearchParams(regi_maintenanceData),*/
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify(regi_maintenanceData),
         })
             .then(response => response.text())
             .then(() => {
@@ -529,6 +563,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 noticeMessage.textContent = '유지보수 정보가 성공적으로 삭제되었습니다.';
                 noticeModal.style.display = 'block';
                 maintenanceTable.destroy();
+                editor.destroy();
                 initmaintenanceTable();
             })
             .catch(error => {
