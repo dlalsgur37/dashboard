@@ -14,25 +14,30 @@ async function handleImageUpload(blob, callback) {
     const url = URL.createObjectURL(blob); // 미리보기 URL 생성
     tempImages.push({blob, url}); // 임시 저장
 
-    callback(encodeURI(url), blob.filename ? blob.filename : blob.name); // 미리보기 적용
+    callback(url, blob.filename ? blob.filename : blob.name); // 미리보기 적용
 }
 
 async function uploadEditorImage(editor) {
     const imageUrlPrefix = "/tui/image?filename=";
-    if (tempImages.length > 0) {
-        const uploadedUrls = await Promise.all(tempImages.map(async ({blob}) => {
-            const formData = new FormData();
-            formData.append("image", blob);
+    // 에디터 내용 가져오기
+    let content = editor.getMarkdown();
 
-            // 서버에 업로드
-            const response = await fetch("/tui/image", {
-                method: "POST", body: formData
-            });
-            return await response.text(); // 실제 URL 반환
+    if (tempImages.length > 0) {
+        const uploadedUrls = await Promise.all(tempImages.map(async ({blob, url}, index) => {
+
+            // 임시 이미지가 editor에 남아있는지 확인
+            if(content.toString().indexOf(url) > -1){
+                const formData = new FormData();
+                formData.append("image", blob);
+
+                // 서버에 업로드
+                const response = await fetch("/tui/image", {
+                    method: "POST", body: formData
+                });
+                return await response.text(); // 실제 URL 반환
+            }
         }));
 
-        // 에디터 내용 가져오기
-        let content = editor.getMarkdown();
         // 미리보기 URL을 실제 업로드된 URL로 변경
         tempImages.forEach(({url}, index) => {
             content = replaceMarkdownImageUrl(content, url.toString(), imageUrlPrefix + uploadedUrls[index]);
