@@ -135,6 +135,7 @@ class ComboboxAutocomplete {
         this.filter = value;
         //this.comboboxNode.value = this.filter;
         this.hiddenIdNode.value = id;
+        console.log(" value "+this.hiddenIdNode.value);
         this.comboboxNode.value = this.filter;
         this.comboboxNode.setSelectionRange(this.filter.length, this.filter.length);
         this.filterOptions();
@@ -580,6 +581,8 @@ class ComboboxAutocomplete {
 
     onOptionClick(event) {
         this.comboboxNode.value = event.target.textContent;
+        this.hiddenIdNode.value = event.target.id; // added hiddenIdNode by mslim 2025.01.22
+        console.log(" value "+this.hiddenIdNode.value);
         this.close(true);
     }
 
