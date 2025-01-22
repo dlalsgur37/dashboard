@@ -5,50 +5,24 @@ let customerInfoEditor = null;
 
 function initCustomerTable() {
     fetch('/customer', {
-            method: 'GET'
-        }
-    )
+        method: 'GET'
+    })
         .then(response => response.json())
         .then(data => {
             customerTable = $('#customerTable').DataTable({
-                data: data,
-                columnDefs: [
-                    {
-                        orderable: false,
-                        render: DataTable.render.select(),
-                        targets: 0,
-                        width: '30px'
-                    },
-                    {targets: 1, className: "customer-name"},
-                    {
-                        targets: 2,
-                        className: "customer-information",
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                columns: [
-                    {"data": null},
-                    {"data": "name"},
-                    {"data": "information"}
-                ],
-                processing: true,
-                select: {
-                    style: 'single',
-                    selector: 'td:first-child'
-                },
-                order: [1, 'asc']
+                data: data, columnDefs: [{
+                    orderable: false, render: DataTable.render.select(), targets: 0, width: '30px'
+                }, {targets: 1, className: "customer-name"}, {
+                    targets: 2, className: "customer-information", orderable: false, /*searchable: false*/
+                }], columns: [{"data": null}, {"data": "name"}, {"data": "information"}], processing: true, select: {
+                    style: 'single', selector: 'td:first-child'
+                }, order: [1, 'asc']
             });
         })
         .then(() => {
             $(".customer-information").each(function (index) {
                 if (index !== 0) {
-                    new toastui.Editor.factory({
-                        el: this,
-                        height: 'auto',
-                        viewer: true,
-                        initialValue: this.innerHTML
-                    });
+                    initTUIEditor(this, 'view', 'auto', this.textContent);
                 }
             });
         })
@@ -67,12 +41,8 @@ function initCustomerTable() {
                 $('#customer-name').val(customerData.name);
                 infoModal.css('display', 'block');
                 $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
-                if (!customerInfoEditor)
-                    customerInfoEditor = new toastui.Editor.factory({
-                        el: document.querySelector('#info-editor'),
-                        height: 'auto',
-                        viewer: true,
-                    });
+                if (!customerInfoEditor) customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
+
                 customerInfoEditor.setMarkdown(customerData.information);
             });
         })
@@ -101,26 +71,17 @@ function initCustomerTable() {
 
             const searchInput = $('.dt-input');
             searchInput.typeahead('destroy');
-            searchInput.typeahead(
-                {
-                    hint: false, // 나머지 글자가 자동으로 보여지는지
-                    highlight: true,// 일치하는 문자 하이라이팅
-                    minLength: 1,    // 검색 시작하는 최소 문자 길이
-                },
-                {
-                    limit: 5, // 자동완성 목록에 보여질 개수
-                    name: 'customer',
-                    //source가 검색어 추천에 목록으로 뿌려질 목록이다.
-                    source: substringMatcher(customerList),
-                    templates: {
-                        empty: [
-                            '<div class="empty-message">',
-                            '일치하는 결과가 없습니다',
-                            '</div>'
-                        ].join('\n')  // 일치하는 결과가 없을 때
-                    }
+            searchInput.typeahead({
+                hint: false, // 나머지 글자가 자동으로 보여지는지
+                highlight: true,// 일치하는 문자 하이라이팅
+                minLength: 1,    // 검색 시작하는 최소 문자 길이
+            }, {
+                limit: 5, // 자동완성 목록에 보여질 개수
+                name: 'customer', //source가 검색어 추천에 목록으로 뿌려질 목록이다.
+                source: substringMatcher(customerList), templates: {
+                    empty: ['<div class="empty-message">', '일치하는 고객사 명이 없습니다', '</div>'].join('\n')  // 일치하는 결과가 없을 때
                 }
-            );
+            });
         })
         .catch(error => {
             console.error(error);
@@ -156,13 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const deleteBtn = document.getElementById('deleteButton');
 
-    const registerEditor = new toastui.Editor({
-        el: document.querySelector('#register-editor'), // 에디터를 적용할 요소 (컨테이너)
-        height: 'auto',                        // 에디터 영역의 높이 값 (OOOpx || auto)
-        initialEditType: 'markdown',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-        initialValue: '',                       // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
-        previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
-    });
+    const registerEditor = initTUIEditor('register-editor', 'edit', 'auto');
     $('#register-editor').height(window.innerHeight * 3 / 7 + 'px')
 
     // 등록창 열기
@@ -196,11 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             customerName.val(customerData.name);
             $('#info-editor').height(window.innerHeight * 3 / 7 + 'px')
             customerInfoEditor.destroy();
-            customerInfoEditor = new toastui.Editor.factory({
-                el: document.querySelector('#info-editor'),
-                height: 'auto',
-                viewer : true,
-            });
+            customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
             customerInfoEditor.setMarkdown(customerData.information);
             this.textContent = '닫기';
             modifyInfoBtn.style.display = 'block';
@@ -211,12 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 고객사 정보 수정
     modifyInfoBtn.addEventListener('click', function () {
         $("#customer-name").removeAttr("readonly");
-        customerInfoEditor = new toastui.Editor.factory({
-            el: document.querySelector('#info-editor'),
-            height: 'auto',
-            initialEditType: 'markdown',
-            previewStyle: 'vertical',
-        });
+        customerInfoEditor = initTUIEditor('info-editor', 'edit', 'auto');
         customerInfoEditor.setMarkdown(customerData.information);
         $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
         closeInfoModalBtn.textContent = '취소';
@@ -226,89 +172,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 고객사 수정버튼 클릭
     applyInfoBtn.addEventListener('click', function () {
-        const editCustomerData = {
-            id: customerData.id,
-            name: $("#customer-name").val(),
-            information: customerInfoEditor.getMarkdown()
-        };
-        fetch('/customer', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: JSON.stringify(editCustomerData),
-        })
-            .then(response => {
-                if (!response.status.toString().startsWith('20')) throw response.status;
-            })
+        uploadEditorImage(customerInfoEditor)
             .then(() => {
-                noticeMessage.textContent = '고객사 정보가 성공적으로 수정되었습니다.';
-                noticeModal.style.display = 'block';
-                closeInfoModalBtn.textContent = '닫기';
-                modifyInfoBtn.style.display = 'block';
-                applyInfoBtn.style.display = 'none';
-            })
-            .then(() => {
-                customerData.information = editCustomerData.information;
-                customerInfoEditor = new toastui.Editor.factory({
-                    el: document.querySelector('#info-editor'),
-                    height: window.innerHeight * 3 / 7 + 'px',
-                    viewer: true,
-                    initialValue: customerData.information
+                const editCustomerData = {
+                    id: customerData.id, name: $("#customer-name").val(), information: customerInfoEditor.getMarkdown()
+                };
+
+                fetch('/customer', {
+                    method: 'PUT', headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                    }, body: JSON.stringify(editCustomerData),
+                }).then(response => {
+                    if (!response.status.toString().startsWith('20')) throw response.status;
+                }).then(() => {
+                    noticeMessage.textContent = '고객사 정보가 성공적으로 수정되었습니다.';
+                    noticeModal.style.display = 'block';
+                    closeInfoModalBtn.textContent = '닫기';
+                    modifyInfoBtn.style.display = 'block';
+                    applyInfoBtn.style.display = 'none';
+                }).then(() => {
+                    customerData.information = editCustomerData.information;
+                    customerInfoEditor = initTUIEditor('info-editor', 'view', window.innerHeight * 3 / 7 + 'px', customerData.information);
+                }).then(() => {
+                    customerTable.destroy();
+                    initCustomerTable();
+                    $("#customer-name").attr("readonly", true);
+                }).catch(error => {
+                    if (error === 500) {
+                        errorMessage.textContent = '수정 중 서버 오류가 발생했습니다.';
+                        errorModal.style.display = 'block';
+                    } else if (error === 409) {
+                        errorMessage.textContent = '중복된 고객사 이름이 있습니다. 다시 시도해주세요.';
+                        errorModal.style.display = 'block';
+                    }
                 });
-            })
-            .then(() => {
-                customerTable.destroy();
-                initCustomerTable();
-                $("#customer-name").attr("readonly", true);
-            })
-            .catch(error => {
-                if (error === 500) {
-                    errorMessage.textContent = '수정 중 서버 오류가 발생했습니다.';
-                    errorModal.style.display = 'block';
-                } else if (error === 409) {
-                    errorMessage.textContent = '중복된 고객사 이름이 있습니다. 다시 시도해주세요.';
-                    errorModal.style.display = 'block';
-                }
-            })
+            }).catch(error => {
+            console.log(error);
+        });
     });
 
     // 고객사 등록 버튼 클릭 (Ajax 요청)
     registerBtn.addEventListener('click', function () {
-        const customerData = {
-            name: document.getElementById('register-name').value,
-            information: registerEditor.getMarkdown(),
-        };
+        uploadEditorImage(registerEditor).then(() => {
+            const customerData = {
+                name: document.getElementById('register-name').value, information: registerEditor.getMarkdown(),
+            };
 
-        // Ajax 요청
-        fetch('/customer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-            body: new URLSearchParams(customerData),
+            // Ajax 요청
+            fetch('/customer', {
+                method: 'POST', headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                }, body: new URLSearchParams(customerData),
+            })
+                .then(response => {
+                    if (!response.status.toString().startsWith('20')) throw response.status;
+                })
+                .then(() => {
+                    noticeMessage.textContent = '고객사가 성공적으로 등록되었습니다.';
+                    noticeModal.style.display = 'block';
+                    registerModal.style.display = 'none'; // 모달 닫기
+                    document.getElementById('register-modal-form').reset(); // 폼 초기화
+                    registerEditor.setMarkdown('');
+                    customerTable.destroy();
+                    initCustomerTable();
+                })
+                .catch(error => {
+                    if (error === 409) {
+                        errorMessage.textContent = '중복된 고객사 이름이 있습니다. 다시 시도해주세요.';
+                        errorModal.style.display = 'block';
+                    } else if (error === 500) {
+                        errorMessage.textContent = '추가 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요.';
+                        errorModal.style.display = 'block';
+                    }
+                });
+        }).catch(error => {
+            console.log(error);
         })
-            .then(response => {
-                if (!response.status.toString().startsWith('20')) throw response.status;
-            })
-            .then(() => {
-                noticeMessage.textContent = '고객사가 성공적으로 등록되었습니다.';
-                noticeModal.style.display = 'block';
-                registerModal.style.display = 'none'; // 모달 닫기
-                document.getElementById('register-modal-form').reset(); // 폼 초기화
-                registerEditor.setMarkdown('');
-                customerTable.destroy();
-                initCustomerTable();
-            })
-            .catch(error => {
-                if (error === 409) {
-                    errorMessage.textContent = '중복된 고객사 이름이 있습니다. 다시 시도해주세요.';
-                    errorModal.style.display = 'block';
-                } else if (error === 500) {
-                    errorMessage.textContent = '추가 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요.';
-                    errorModal.style.display = 'block';
-                }
-            });
     });
 
     // 삭제 버튼
