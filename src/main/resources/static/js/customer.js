@@ -3,6 +3,7 @@ let customerData = null;
 let customerList = null;
 let customerInfoEditor = null;
 
+
 function initCustomerTable() {
     fetch('/customer', {
         method: 'GET'
@@ -10,14 +11,58 @@ function initCustomerTable() {
         .then(response => response.json())
         .then(data => {
             customerTable = $('#customerTable').DataTable({
-                data: data, columnDefs: [{
-                    orderable: false, render: DataTable.render.select(), targets: 0, width: '30px'
-                }, {targets: 1, className: "customer-name"}, {
-                    targets: 2, className: "customer-information", orderable: false, /*searchable: false*/
-                }], columns: [{"data": null}, {"data": "name"}, {"data": "information"}], processing: true, select: {
-                    style: 'single', selector: 'td:first-child'
-                }, order: [1, 'asc']
+                data: data,
+                columnDefs: [
+                    {
+                        orderable: false,
+                        render: DataTable.render.select(),
+                        targets: 0,
+                        width: '30px'
+                    },
+                    {
+                        targets: 1,
+                        className: "customer-name"
+                    },
+                    {
+                        targets: 2,
+                        className: "customer-information",
+                        orderable: false,
+                        /*searchable: false*/
+                    }],
+                columns: [
+                    {
+                        "data": null
+                    },
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "information"
+                    }],
+                processing: true,
+                select: {
+                    style: 'single',
+                    selector: 'td:first-child'
+                },
+                order: [1, 'asc'],
             });
+        })
+        .then(() => {
+            customerTable.MakeCellsEditable({
+                onUpdate : function (updatedCell, updatedRow, oldValue) {
+                },
+                columns : [1],
+                altFunction : function (idx) {
+                    customerData = customerTable.row(idx).data();
+                    const infoModal = $('#infoModal');
+                    $('#customer-name').val(customerData.name);
+                    infoModal.css('display', 'block');
+                    $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
+                    if (!customerInfoEditor) customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
+
+                    customerInfoEditor.setMarkdown(customerData.information);
+                }
+            })
         })
         .then(() => {
             $(".customer-information").each(function (index) {
@@ -35,7 +80,7 @@ function initCustomerTable() {
                 $('#deleteButton').attr('disabled', true);
             });
 
-            customerTable.on('dblclick', 'tr', function () {
+            /*customerTable.on('dblclick', 'tr', function () {
                 customerData = customerTable.row(this).data();
                 const infoModal = $('#infoModal');
                 $('#customer-name').val(customerData.name);
@@ -44,7 +89,7 @@ function initCustomerTable() {
                 if (!customerInfoEditor) customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
 
                 customerInfoEditor.setMarkdown(customerData.information);
-            });
+            });*/
         })
         .then(() => {
             customerList = customerTable.columns(1).data().unique().toArray()[0];

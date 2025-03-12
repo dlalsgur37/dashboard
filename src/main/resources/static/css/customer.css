@@ -1,4 +1,4 @@
-
+@charset "UTF-8";
 :root{
     --info-bg-color: #2b7aff;
     --info-bg-color-hover: #3a84ff;
@@ -159,6 +159,7 @@
     border-radius: 10px;
     width: 500px;
     text-align: center;
+    white-space: pre-line;
 }
 .error-modal-content h3 {
     margin: 0 0 10px;
@@ -220,11 +221,14 @@
     font-size: 16px;
     cursor: pointer;
 }
+.customer-name th {
+    font-weight: bold;
+}
+
 .customer-name {
     text-align: left;
-    font-weight: bold;
     font-size: medium;
-    width: 18%
+    width: 18%;
 }
 .customer-information {
     text-align: left;
@@ -241,18 +245,4 @@
 
 table.dataTable.display > tbody > tr.selected * {
     color: white;
-}
-
-.ri--ball-pen-fill {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m17.85 11.805l-.708-.707l-9.9 9.9H3v-4.243L14.314 5.44l5.657 5.657a1 1 0 0 1 0 1.414L12.9 19.583l-1.415-1.414zm.706-9.192l2.829 2.828a1 1 0 0 1 0 1.414L19.97 8.27l-4.243-4.242l1.414-1.414a1 1 0 0 1 1.414 0'/%3E%3C/svg%3E");
-    background-color: currentColor;
-    -webkit-mask-image: var(--svg);
-    mask-image: var(--svg);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
 }
