@@ -52,8 +52,8 @@ function initCustomerTable() {
                 onUpdate : function (updatedCell, updatedRow, oldValue) {
                 },
                 columns : [1],
-                altFunction : function (idx) {
-                    customerData = customerTable.row(idx).data();
+                altFunction : function (cell) {
+                    customerData = customerTable.row(cell.index().row).data();
                     const infoModal = $('#infoModal');
                     $('#customer-name').val(customerData.name);
                     infoModal.css('display', 'block');

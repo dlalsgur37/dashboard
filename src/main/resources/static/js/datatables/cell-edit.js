@@ -126,7 +126,7 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
                 }
             } else if (settings.columns && settings.altFunction) {
                 const fn = settings.altFunction;
-                fn(currentColumnIndex);
+                fn(table.cell(this));
             }
         });
     }
