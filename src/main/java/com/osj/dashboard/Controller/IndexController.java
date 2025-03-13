@@ -26,4 +26,9 @@ public class IndexController {
         return "index";
 
     }
+
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/index";
+    }
 }
