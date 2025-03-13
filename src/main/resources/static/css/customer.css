@@ -243,6 +243,14 @@
     text-align: left;
 }
 
-table.dataTable.display > tbody > tr.selected * {
+/*table.dataTable.display > tbody > tr.selected * {
     color: white;
+}*/
+
+.customer-edit-input {
+    color: black !important;
+}
+
+th > .dt-column-order, th > .dt-select-checkbox{
+    display: none !important;
 }

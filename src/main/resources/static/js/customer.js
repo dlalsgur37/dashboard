@@ -14,14 +14,15 @@ function initCustomerTable() {
                 data: data,
                 columnDefs: [
                     {
-                        orderable: false,
                         render: DataTable.render.select(),
                         targets: 0,
-                        width: '30px'
+                        width: '30px',
+                        orderable: false,
                     },
                     {
                         targets: 1,
-                        className: "customer-name"
+                        className: "customer-name",
+                        orderable: false,
                     },
                     {
                         targets: 2,
@@ -44,30 +45,53 @@ function initCustomerTable() {
                     style: 'single',
                     selector: 'td:first-child'
                 },
-                order: [1, 'asc'],
             });
         })
         .then(() => {
-            customerTable.MakeCellsEditable({
+            MakeCellsEditable(customerTable.table(), {
                 onUpdate : function (updatedCell, updatedRow, oldValue) {
+                    fetch('/customer', {
+                        method: 'PUT', headers: {
+                            'Content-Type': 'application/json; charset=UTF-8',
+                        }, body: JSON.stringify(updatedRow.data()),
+                    }).then(response => {
+                        if (!response.status.toString().startsWith('20')) throw response.status;
+                    }).then(() => {
+                        customerData = updatedRow.data();
+                    }).catch(error => {
+                        console.log(error);
+                        if (error === 500) {
+                            $('#errorMessage').text('수정 중 서버 오류가 발생했습니다.');
+                        } else if (error === 409) {
+                            $('#errorMessage').text('중복된 고객사 이름이 있습니다. 다시 시도해주세요.');
+                        }
+                        $('#errorModal').css('display', 'block');
+                        updatedCell.data(oldValue);
+                    });
                 },
                 columns : [1],
-                altFunction : function (cell) {
-                    customerData = customerTable.row(cell.index().row).data();
-                    const infoModal = $('#infoModal');
-                    $('#customer-name').val(customerData.name);
-                    infoModal.css('display', 'block');
-                    $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
-                    if (!customerInfoEditor) customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
-
-                    customerInfoEditor.setMarkdown(customerData.information);
-                }
-            })
+                inputCss: 'customer-edit-input',
+                wrapperHtml: '<div class="customer-input-wrapper">{content}</div>',
+                confirmationButton: {
+                    listenToKeys: true,
+                    text: '수정',
+                    css: 'customer-confirmation-button',    // Optional
+                },
+            });
         })
         .then(() => {
             $(".customer-information").each(function (index) {
                 if (index !== 0) {
                     initTUIEditor(this, 'view', 'auto', this.textContent);
+                    this.ondblclick = function () {
+                        customerData = customerTable.row(index-1).data();
+                        $('#customer-name').val(customerData.name);
+                        $('#infoModal').css('display', 'block');
+                        $('#info-editor').height(window.innerHeight * 3 / 7 + 'px');
+                        if (!customerInfoEditor) customerInfoEditor = initTUIEditor('info-editor', 'view', 'auto');
+
+                        customerInfoEditor.setMarkdown(customerData.information);
+                    };
                 }
             });
         })

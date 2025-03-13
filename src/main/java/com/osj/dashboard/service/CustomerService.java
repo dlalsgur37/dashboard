@@ -111,8 +111,12 @@ public class CustomerService {
      * */
     public int updateCustomer(CustomerDTO customer) {
         try {
-            customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
+            CustomerDTO existCustomer = customerMapper.selectCustomer(null, customer.getName());
+            if (existCustomer != null && !customer.getId().equals(existCustomer.getId())) {
+                return HttpStatus.CONFLICT.value();
+            }
 
+            customerMapper.updateCustomer(customer.getId(), customer.getName(), customer.getInformation());
             return HttpStatus.OK.value();
         } catch (Exception e) {
             return HttpStatus.INTERNAL_SERVER_ERROR.value();
