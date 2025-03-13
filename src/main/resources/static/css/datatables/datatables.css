@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * This combined file was created by the DataTables downloader builder:
  *   https://datatables.net/download
@@ -10,10 +11,11 @@
  *   DataTables 2.1.8, Buttons 3.2.0, Column visibility 3.2.0, HTML5 export 3.2.0, DateTime 1.5.4, Responsive 3.0.3, RowReorder 1.5.0, SearchBuilder 1.8.1, SearchPanes 2.3.3, Select 2.1.0, StateRestore 1.4.1
  */
 
-@charset "UTF-8";
 :root {
-  --dt-row-selected: 142, 185, 255;
-  --dt-row-selected-text: 255, 255, 255;
+  --dt-row-selected: 220, 235, 255;
+  /*--dt-row-selected: 13, 110, 253;*/
+  --dt-row-selected-text: black;
+  /*--dt-row-selected-text: 255, 255, 255;*/
   --dt-row-selected-link: 9, 10, 11;
   --dt-row-stripe: 0, 0, 0;
   --dt-row-hover: 0, 0, 0;

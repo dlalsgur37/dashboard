@@ -212,10 +212,6 @@
     cursor: pointer;
 }
 
-table.dataTable.display > tbody > tr.selected * {
-    color: #ffffff;
-}
-
 .ri--ball-pen-fill {
     display: inline-block;
     width: 24px;
